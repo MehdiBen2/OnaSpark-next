@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import ImageCarousel from '@/components/ImageCarousel';
+import ServicesSection from '@/components/ServicesSection';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -49,52 +50,13 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Vercel-Inspired Background Gradient */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div 
-          initial={{ backgroundPosition: '0% 50%' }}
-          animate={{ 
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-            transition: {
-              duration: 10,
-              repeat: Infinity,
-              ease: "linear"
-            }
-          }}
-          className="absolute -inset-[50px] 
-            bg-gradient-to-r 
-            from-blue-100/30 
-            via-blue-200/20 
-            to-blue-300/30 
-            opacity-100 
-            blur-3xl 
-            animate-gradient"
-        ></motion.div>
-        
-        {/* Vercel-style Grid Overlay */}
-        <div className="absolute inset-0 
-          bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),
-               linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
-          bg-[size:30px_30px] 
-          opacity-50 
-          pointer-events-none"></div>
-      </div>
-      
-      {/* Background Image Carousel */}
-      <div className="absolute inset-0 z-10">
+      {/* Full Page Background Carousel */}
+      <div className="fixed inset-0 z-0">
         <ImageCarousel />
       </div>
 
-      {/* Subtle Overlay for Depth */}
-      <div className="absolute inset-0 z-20 
-        bg-gradient-to-b 
-        from-transparent 
-        via-white/10 
-        to-white/20 
-        opacity-50"></div>
-
       {/* Dark Overlay for Improved Readability */}
-      <div className="absolute inset-0 z-30 bg-black/30"></div>
+      <div className="fixed inset-0 z-10 bg-black/40 pointer-events-none"></div>
 
       {/* Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 
@@ -184,7 +146,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <div className="relative z-40 min-h-screen flex items-center justify-center px-6 py-24">
+      <div className="relative z-20 min-h-screen flex items-center justify-center px-6 py-24">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           {/* Content Section */}
           <div className="text-white space-y-8 text-center md:text-left">
@@ -299,6 +261,11 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+      </div>
+
+      {/* Services Section */}
+      <div className="relative z-20 bg-blue-50">
+        <ServicesSection />
       </div>
     </div>
   );
