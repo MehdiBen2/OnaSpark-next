@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* Global styles */
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Remove conflicting sidebar styles from Tailwind components layer */
+@layer utilities {
+  /* Any utility classes that should take precedence */
+}
+
+/* Import sidebar styles AFTER Tailwind to ensure they take precedence */
+@import './sidebar.css';
+
+@layer components {
+  .sidebar-section {
+    @apply rounded-full bg-[#3366CC] text-white shadow-md transition-all duration-300 ease-in-out;
+  }
+
+  .sidebar-content {
+    @apply mt-3 space-y-3 px-2;
+  }
+
+  .action-card {
+    @apply flex items-center p-4 rounded-full transition-all duration-200 shadow-sm hover:shadow-lg;
+  }
+
+  .action-card-icon {
+    @apply flex items-center justify-center w-12 h-12 rounded-full bg-white/10;
+  }
+
+  .action-card-content {
+    @apply ml-4 flex-grow;
+  }
+
+  .action-card-title {
+    @apply text-sm font-semibold;
+  }
+
+  .action-card-description {
+    @apply text-xs mt-1 opacity-90;
+  }
+
+  /* Color variants */
+  .card-red {
+    @apply bg-[#dc3545] text-white hover:bg-[#c82333];
+  }
+
+  .card-yellow {
+    @apply bg-[#ffc107] text-gray-900 hover:bg-[#e0a800];
+  }
+
+  .card-blue {
+    @apply bg-[#0d6efd] text-white hover:bg-[#0b5ed7];
+  }
+
+  .card-purple {
+    @apply bg-[#6610f2] text-white hover:bg-[#520dc2];
+  }
+
+  .card-green {
+    @apply bg-[#198754] text-white hover:bg-[#146c43];
+  }
+
+  .card-cyan {
+    @apply bg-[#0dcaf0] text-white hover:bg-[#0b9ed7];
+  }
+
+  .card-teal {
+    @apply bg-[#20c997] text-white hover:bg-[#1aa179];
+  }
+
+  .action-btn {
+    @apply flex items-center p-4 rounded-full transition-all duration-200 shadow-sm;
+  }
+
+  .action-btn-red {
+    @apply bg-[#dc3545] text-white hover:bg-[#c82333];
+  }
+
+  .action-btn-yellow {
+    @apply bg-[#ffc107] text-gray-900 hover:bg-[#e0a800];
+  }
+
+  .action-btn-blue {
+    @apply bg-[#0d6efd] text-white hover:bg-[#0b5ed7];
+  }
+
+  .action-btn-purple {
+    @apply bg-[#6610f2] text-white hover:bg-[#520dc2];
+  }
+
+  .action-btn-green {
+    @apply bg-[#198754] text-white hover:bg-[#146c43];
+  }
+
+  .action-btn-cyan {
+    @apply bg-[#0dcaf0] text-white hover:bg-[#0b9ed7];
+  }
+
+  .action-btn-teal {
+    @apply bg-[#20c997] text-white hover:bg-[#1aa179];
+  }
+}
