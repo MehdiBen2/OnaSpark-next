@@ -1,9 +1,20 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
-// Use environment variable or default to a path in the project
-const dbPath = process.env.DATABASE_URL || 
-  path.resolve(process.cwd(), 'ona_spark.db');
+// Ensure a persistent database path for Render
+const ensureDatabaseDirectory = () => {
+  const baseDir = process.env.RENDER_DATA_DIR || process.cwd();
+  const databaseDir = path.join(baseDir, 'database');
+  
+  if (!fs.existsSync(databaseDir)) {
+    fs.mkdirSync(databaseDir, { recursive: true });
+  }
+  
+  return path.join(databaseDir, 'ona_spark.db');
+};
+
+const dbPath = process.env.DATABASE_URL || ensureDatabaseDirectory();
 
 // Create a singleton database connection
 class DatabaseConnection {
@@ -21,17 +32,21 @@ class DatabaseConnection {
         // Enable foreign key support
         DatabaseConnection.instance.pragma('foreign_keys = ON');
 
-        // Initial setup
-        DatabaseConnection.instance.exec(`
-          CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            role TEXT NOT NULL DEFAULT 'user',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-          );
-        `);
+        // Initial setup with error handling
+        try {
+          DatabaseConnection.instance.exec(`
+            CREATE TABLE IF NOT EXISTS users (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              username TEXT UNIQUE NOT NULL,
+              email TEXT UNIQUE NOT NULL,
+              password_hash TEXT NOT NULL,
+              role TEXT NOT NULL DEFAULT 'user',
+              created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+          `);
+        } catch (setupError) {
+          console.error('Database table setup error:', setupError);
+        }
       } catch (error) {
         console.error('Database initialization error:', error);
         throw error;

@@ -3,10 +3,10 @@
 set -o errexit
 
 # Install dependencies
-npm install
+npm ci
 
 # Build the application
 npm run build
 
 # Start the application
-npm run start
+npm start
