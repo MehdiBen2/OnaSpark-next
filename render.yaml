@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: ona-spark
+    env: node
+    buildCommand: chmod +x ./build.sh && ./build.sh
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.x
+      - key: NPM_VERSION
+        value: 9.x
+    plan: free
+    healthCheckPath: /
+    autoDeploy: true
+    envSecrets:
+      - key: DATABASE_URL
+        fromService:
+          type: sqlite
+          name: ona-spark-db
+          property: connectionString

@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Home() {
   const [currentTitle, setCurrentTitle] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   
   const titles = [
     'Office National de l\'Assainissement',
@@ -25,8 +26,28 @@ export default function Home() {
       setCurrentTitle((prev) => (prev + 1) % titles.length);
     }, 3000);
 
-    return () => clearInterval(interval);
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('scroll', toggleVisibility);
+    };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const titleVariants = {
     initial: { 
@@ -53,6 +74,36 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
+      {/* Go to Top Button */}
+      {isVisible && (
+        <button 
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 
+            bg-blue-600 text-white 
+            w-12 h-12 rounded-full 
+            flex items-center justify-center 
+            shadow-lg hover:bg-blue-700 
+            transition-all duration-300 
+            animate-bounce"
+          aria-label="Retour en haut"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            strokeWidth={2} 
+            stroke="currentColor" 
+            className="w-6 h-6"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" 
+            />
+          </svg>
+        </button>
+      )}
+
       {/* Full Page Background Carousel */}
       <div className="fixed inset-0 z-0">
         <ImageCarousel />
@@ -80,15 +131,35 @@ export default function Home() {
           </div>
           <nav className="hidden md:flex space-x-3 items-center">
             {[
-              { href: "/accueil", label: "Accueil" },
-              { href: "/landing", label: "Landing" },
-              { href: "/services", label: "Services" },
-              { href: "/a-propos", label: "À propos" },
-              { href: "/contact", label: "Contact" }
-            ].map(({ href, label }) => (
-              <Link 
-                key={href}
-                href={href} 
+              { 
+                label: "Accueil", 
+                scrollTo: () => window.scrollTo({ top: 0, behavior: 'smooth' }) 
+              },
+              { 
+                label: "Services", 
+                scrollTo: () => {
+                  const servicesSection = document.getElementById('services');
+                  servicesSection?.scrollIntoView({ behavior: 'smooth' });
+                }
+              },
+              { 
+                label: "À propos", 
+                scrollTo: () => {
+                  const aboutSection = document.getElementById('about');
+                  aboutSection?.scrollIntoView({ behavior: 'smooth' });
+                }
+              },
+              { 
+                label: "Contact", 
+                scrollTo: () => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }
+            ].map(({ label, scrollTo }) => (
+              <button 
+                key={label}
+                onClick={scrollTo}
                 className="nav-link text-gray-600 font-bold 
                   px-3 py-2 
                   text-base
@@ -104,7 +175,7 @@ export default function Home() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0056b3] 
                   transition-all duration-300 
                   group-hover:w-full"></span>
-              </Link>
+              </button>
             ))}
             <Link 
               href="/login" 
@@ -275,12 +346,12 @@ export default function Home() {
       </div>
 
       {/* About Section */}
-      <div className="relative z-20 bg-blue-50">
+      <div id="about" className="relative z-20 bg-blue-50">
         <AboutSection />
       </div>
 
       {/* Contact Section */}
-      <div className="relative z-20 bg-blue-50">
+      <div id="contact" className="relative z-20 bg-blue-50">
         <ContactSection />
       </div>
 
