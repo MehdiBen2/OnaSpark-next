@@ -1,4 +1,5 @@
-import Database from 'better-sqlite3';
+import sqlite3 from 'sqlite3';
+import { open, Database } from 'sqlite';
 import path from 'path';
 import fs from 'fs';
 
@@ -18,23 +19,25 @@ const dbPath = process.env.DATABASE_URL || ensureDatabaseDirectory();
 
 // Create a singleton database connection
 class DatabaseConnection {
-  private static instance: Database.Database;
+  private static instance: Database | null = null;
 
   private constructor() {}
 
-  public static getInstance(): Database.Database {
+  public static async getInstance(): Promise<Database> {
     if (!DatabaseConnection.instance) {
       try {
-        DatabaseConnection.instance = new Database(dbPath, { 
-          verbose: process.env.NODE_ENV === 'development' ? console.log : undefined
+        DatabaseConnection.instance = await open({
+          filename: dbPath,
+          driver: sqlite3.Database,
+          mode: sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
         });
 
         // Enable foreign key support
-        DatabaseConnection.instance.pragma('foreign_keys = ON');
+        await DatabaseConnection.instance.run('PRAGMA foreign_keys = ON');
 
         // Initial setup with error handling
         try {
-          DatabaseConnection.instance.exec(`
+          await DatabaseConnection.instance.run(`
             CREATE TABLE IF NOT EXISTS users (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               username TEXT UNIQUE NOT NULL,
@@ -55,9 +58,11 @@ class DatabaseConnection {
     return DatabaseConnection.instance;
   }
 
-  public static closeConnection() {
+  // Optional: Add a method to close the database connection
+  public static async closeConnection() {
     if (DatabaseConnection.instance) {
-      DatabaseConnection.instance.close();
+      await DatabaseConnection.instance.close();
+      DatabaseConnection.instance = null;
     }
   }
 }
