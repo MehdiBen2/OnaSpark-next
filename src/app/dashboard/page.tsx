@@ -83,9 +83,9 @@ export default function DashboardPage() {
       <div className="absolute inset-0 bg-gradient-to-r from-[rgb(74,144,226)] to-[rgb(26,35,126)] h-[400px]"></div>
       
       <div className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
           <div className="flex flex-col items-center text-center">
-            <div className="relative w-[300px] h-[150px] mb-6">
+            <div className="relative w-[300px] h-[150px] mb-5">
               <Image
                 src="/images/onalogos/sparkLogofull.png"
                 alt="ONA Spark Logo"

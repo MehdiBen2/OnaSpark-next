@@ -18,20 +18,27 @@ import {
   faShieldAlt,
   faChevronDown,
   faUsers,
-  faCog
+  faCog,
+  faBars,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsAdminOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -40,6 +47,114 @@ export default function Navbar() {
   }, []);
 
   const isActive = (path: string) => pathname === path ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20';
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsAdminOpen(false);
+  };
+
+  const NavLinks = () => (
+    <>
+      <Link
+        href="/dashboard"
+        className={`${isActive('/dashboard')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
+        onClick={() => {
+          setIsMobileMenuOpen(false);
+          setIsAdminOpen(false);
+        }}
+      >
+        <FontAwesomeIcon icon={faChartLine} className="h-4 w-4" />
+        <span>Tableau de bord</span>
+      </Link>
+      <Link
+        href="/departements"
+        className={`${isActive('/departements')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
+        onClick={() => {
+          setIsMobileMenuOpen(false);
+          setIsAdminOpen(false);
+        }}
+      >
+        <FontAwesomeIcon icon={faBuilding} className="h-4 w-4" />
+        <span>Départements</span>
+      </Link>
+      <Link
+        href="/profile"
+        className={`${isActive('/profile')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
+        onClick={() => {
+          setIsMobileMenuOpen(false);
+          setIsAdminOpen(false);
+        }}
+      >
+        <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+        <span>Mon Profil</span>
+      </Link>
+      {session?.user?.role === 'Admin' && (
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setIsAdminOpen(!isAdminOpen)}
+            className={`${pathname.startsWith('/admin') ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20'} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5 w-full justify-between`}
+          >
+            <div className="flex items-center space-x-2.5">
+              <FontAwesomeIcon icon={faShieldAlt} className="h-4 w-4" />
+              <span>Administration</span>
+            </div>
+            <FontAwesomeIcon 
+              icon={faChevronDown} 
+              className={`h-3 w-3 transition-transform duration-200 ${isAdminOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+
+          <AnimatePresence>
+            {isAdminOpen && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="py-1 space-y-2">
+                  <Link
+                    href="/admin/users"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 rounded-lg"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsAdminOpen(false);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faUsers} className="h-4 w-4" />
+                    <span>Gestion Utilisateurs</span>
+                  </Link>
+                  <Link
+                    href="/admin/settings"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 rounded-lg"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsAdminOpen(false);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faCog} className="h-4 w-4" />
+                    <span>Paramètres</span>
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+      <Link
+        href="/documentation"
+        className={`${isActive('/documentation')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
+        onClick={() => {
+          setIsMobileMenuOpen(false);
+          setIsAdminOpen(false);
+        }}
+      >
+        <FontAwesomeIcon icon={faBook} className="h-4 w-4" />
+        <span>Documentation</span>
+      </Link>
+    </>
+  );
 
   if (!session) {
     return null;
@@ -74,87 +189,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Navigation and User menu */}
-        <div className="flex items-center space-x-4">
-          <Link
-            href="/dashboard"
-            className={`${isActive('/dashboard')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
-          >
-            <FontAwesomeIcon icon={faChartLine} className="h-4 w-4" />
-            <span>Tableau de bord</span>
-          </Link>
-          <Link
-            href="/departements"
-            className={`${isActive('/departements')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
-          >
-            <FontAwesomeIcon icon={faBuilding} className="h-4 w-4" />
-            <span>Départements</span>
-          </Link>
-          <Link
-            href="/profile"
-            className={`${isActive('/profile')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
-          >
-            <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
-            <span>Mon Profil</span>
-          </Link>
-          {session?.user?.role === 'Admin' && (
-            <div className="relative" ref={dropdownRef}>
-              <button 
-                onClick={() => setIsAdminOpen(!isAdminOpen)}
-                className={`${pathname.startsWith('/admin') ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20'} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
-              >
-                <FontAwesomeIcon icon={faShieldAlt} className="h-4 w-4" />
-                <span>Administration</span>
-                <FontAwesomeIcon 
-                  icon={faChevronDown} 
-                  className={`h-3 w-3 ml-1 transition-transform duration-200 ${isAdminOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {isAdminOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full right-0 mt-2 w-56 
-                      bg-white 
-                      text-gray-800 
-                      rounded-lg 
-                      shadow-lg 
-                      z-50 
-                      overflow-hidden
-                      border border-gray-100"
-                  >
-                    <div className="py-1">
-                      <Link
-                        href="/admin/users"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                      >
-                        <FontAwesomeIcon icon={faUsers} className="h-4 w-4" />
-                        <span>Gestion Utilisateurs</span>
-                      </Link>
-                      <Link
-                        href="/admin/settings"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                      >
-                        <FontAwesomeIcon icon={faCog} className="h-4 w-4" />
-                        <span>Paramètres</span>
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-          <Link
-            href="/documentation"
-            className={`${isActive('/documentation')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
-          >
-            <FontAwesomeIcon icon={faBook} className="h-4 w-4" />
-            <span>Documentation</span>
-          </Link>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-4">
+          <NavLinks />
 
           {/* User info and logout */}
           <div className="flex items-center pl-6 border-l border-white/20">
@@ -187,6 +224,94 @@ export default function Navbar() {
             </motion.button>
           </div>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden flex items-center">
+          <button 
+            onClick={() => {
+              setIsMobileMenuOpen(!isMobileMenuOpen);
+              setIsAdminOpen(false);
+            }}
+            className="
+              bg-white/20 
+              hover:bg-white/30 
+              text-white 
+              p-2 
+              rounded-full 
+              transition-all 
+              duration-300 
+              flex 
+              items-center 
+              justify-center
+            "
+          >
+            <FontAwesomeIcon 
+              icon={isMobileMenuOpen ? faTimes : faBars} 
+              className="h-5 w-5" 
+            />
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              ref={mobileMenuRef}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="
+                fixed 
+                top-16 
+                left-0 
+                right-0 
+                bg-white 
+                shadow-lg 
+                z-40 
+                md:hidden
+                text-gray-800
+              "
+            >
+              <div className="flex flex-col space-y-2 p-4">
+                <NavLinks />
+                
+                {/* Mobile User Info and Logout */}
+                <div className="pt-4 mt-4 border-t border-gray-200 flex flex-col space-y-2">
+                  <div className="flex items-center mb-2">
+                    <FontAwesomeIcon icon={faUser} className="h-4 w-4 mr-2 text-gray-600" />
+                    <span className="text-sm font-medium text-gray-800">
+                      {session.user.name || session.user.email}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      signOut({ callbackUrl: '/login' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="
+                      bg-[var(--ona-primary)] 
+                      text-white 
+                      px-4 
+                      py-2 
+                      rounded-full 
+                      flex 
+                      items-center 
+                      justify-center 
+                      space-x-2
+                      transition-all 
+                      duration-300
+                      hover:bg-opacity-90
+                    "
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
+                    <span>Déconnexion</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );
