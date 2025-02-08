@@ -1,33 +1,50 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
-import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 
 // Input validation schema
 const LoginSchema = z.object({
-  username: z.string().min(1, 'Nom d\'utilisateur requis'),
+  email: z.string().email('Email invalide'),
   password: z.string().min(1, 'Mot de passe requis')
 });
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const router = useRouter();
+
+  // Cycling text animation
+  const [cyclingText, setCyclingText] = useState('Smart platform for reporting and knowledge');
+  const cycleTexts = [
+    'Smart platform for reporting and knowledge',
+    'Office National de l\'Assainissement',
+    'Système de Gestion Centralisée des Données',
+    'Plateforme Intelligente de Suivi Hydraulique'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentIndex = cycleTexts.indexOf(cyclingText);
+      const nextIndex = (currentIndex + 1) % cycleTexts.length;
+      setCyclingText(cycleTexts[nextIndex]);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [cyclingText]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
 
     try {
-      const validatedData = LoginSchema.parse({ username, password });
+      const validatedData = LoginSchema.parse({ email, password });
       // TODO: Implement actual authentication
-      if (validatedData.username === 'admin' && validatedData.password === 'password') {
+      if (validatedData.email === 'admin@onaspark.dz' && validatedData.password === 'password') {
         router.push('/home');
       } else {
         setErrors({ general: 'Identifiants incorrects' });
@@ -36,7 +53,7 @@ export default function LoginPage() {
       if (err instanceof z.ZodError) {
         const fieldErrors = err.flatten().fieldErrors;
         setErrors({
-          username: fieldErrors.username?.[0],
+          email: fieldErrors.email?.[0],
           password: fieldErrors.password?.[0]
         });
       } else {
@@ -47,127 +64,118 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side - Dark background with logo */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-b from-gray-700 to-gray-900 text-white p-12 flex-col justify-between relative">
-        <div className="flex flex-col items-center text-center space-y-8">
-          <div className="text-2xl font-bold">
-            Office National de l'Assainissement
-          </div>
-          <div className="text-xl">
-            SparK
-          </div>
-          <div className="w-32 h-32 relative">
+      {/* Left Sidebar with Image */}
+      <div className="hidden lg:block lg:w-1/2 relative">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/backrounds/bglogin.png"
+            alt="ONA Water Infrastructure"
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full"
+            priority
+          />
+        </div>
+        <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
+          <div className="max-w-md text-center space-y-6">
             <Image
               src="/images/Ona_Blogo.png"
               alt="ONA Logo"
-              width={128}
-              height={128}
-              className="object-contain"
+              width={120}
+              height={120}
+              className="mx-auto mb-6"
             />
+            <h2 className="text-3xl font-bold">
+              Office National de l'Assainissement
+            </h2>
+            <p 
+              key={cyclingText} 
+              className="text-lg opacity-80 transition-all duration-500 ease-in-out transform animate-fade-in"
+            >
+              {cyclingText}
+            </p>
+            <div className="border-t border-white/30 pt-6 mt-6">
+              <p className="text-sm opacity-70">
+                Votre plateforme de gestion et de suivi des infrastructures hydrauliques
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="text-center text-sm opacity-80">
-          <p>Ce logo est la propriété exclusive de l'Office National de l'Assainissement</p>
-          <p className="mt-2">Système de Gestion Centralisée des Données</p>
         </div>
       </div>
 
-      {/* Right side - Login form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      {/* Right Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Connexion à l'office
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Connexion à l'Office
             </h2>
-            <div className="mt-2 text-sm text-gray-600">
-              Veuillez vous connecter avec vos identifiants pour accéder à la plateforme OnaSpark.
-            </div>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              Veuillez vous connecter pour accéder à votre tableau de bord
+            </p>
           </div>
 
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Nom d'utilisateur
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    required
-                    className={`appearance-none block w-full px-3 py-2 border ${
-                      errors.username ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  {errors.username && (
-                    <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-                  )}
-                </div>
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Adresse email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
+                  ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                placeholder="vous@example.com"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Mot de passe
-                </label>
-                <div className="mt-1 relative">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    className={`appearance-none block w-full px-3 py-2 border ${
-                      errors.password ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </button>
-                  {errors.password && (
-                    <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-                  )}
-                </div>
-              </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Mot de passe
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
+                  ${errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                placeholder="••••••••"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             {errors.general && (
-              <div className="text-sm text-red-600 text-center">
+              <div className="text-center text-red-500 text-sm">
                 {errors.general}
               </div>
             )}
 
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Se connecter
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md 
+                hover:bg-blue-700 transition-colors duration-300 
+                focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Se connecter
+            </button>
 
             <div className="text-center">
-              <Link
-                href="/"
-                className="text-sm text-blue-600 hover:text-blue-500"
+              <Link 
+                href="/forgot-password" 
+                className="text-sm text-blue-600 hover:underline dark:text-blue-400"
               >
-                Retour à l'accueil
+                Mot de passe oublié ?
               </Link>
-            </div>
-
-            <div className="text-center text-xs text-gray-500">
-              Essayez notre nouvelle interface de connexion
             </div>
           </form>
         </div>
