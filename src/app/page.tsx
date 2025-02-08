@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ImageCarousel from '@/components/ImageCarousel';
 import ServicesSection from '@/components/ServicesSection';
+import AboutSection from '@/components/AboutSection';
+import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -267,6 +270,19 @@ export default function Home() {
       <div className="relative z-20 bg-blue-50">
         <ServicesSection />
       </div>
+
+      {/* About Section */}
+      <div className="relative z-20 bg-blue-50">
+        <AboutSection />
+      </div>
+
+      {/* Contact Section */}
+      <div className="relative z-20 bg-blue-50">
+        <ContactSection />
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
