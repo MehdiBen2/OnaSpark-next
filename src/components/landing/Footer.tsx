@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-16">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-12">
+        <div className="grid md:grid-cols-3 gap-12">
           {/* Logo and Description */}
           <div>
             <h3 className="text-2xl font-bold mb-4 text-white">
@@ -93,28 +93,6 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h4 className="text-xl font-semibold mb-6">
-              Restez Informé
-            </h4>
-            <p className="text-gray-400 mb-4">
-              Abonnez-vous à notre newsletter pour les dernières mises à jour
-            </p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Votre email" 
-                className="w-full px-4 py-2 rounded-l-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button 
-                className="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                S'abonner
-              </button>
-            </div>
           </div>
         </div>
 

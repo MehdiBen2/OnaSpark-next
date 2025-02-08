@@ -107,7 +107,7 @@ export default function Home() {
               </Link>
             ))}
             <Link 
-              href="/connexion" 
+              href="/login" 
               className="login-btn 
                 bg-gradient-to-r from-[#0056b3] to-[#004494] 
                 text-white 
@@ -192,7 +192,7 @@ export default function Home() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 justify-center md:justify-start items-center">
               <Link 
-                href="/platform" 
+                href="/login" 
                 className="w-full sm:w-auto px-10 py-4 text-lg 
                   bg-white text-blue-900 
                   rounded-full 
@@ -223,8 +223,11 @@ export default function Home() {
                 </svg>
               </Link>
               
-              <Link 
-                href="/discover" 
+              <button 
+                onClick={() => {
+                  const servicesSection = document.getElementById('services');
+                  servicesSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="w-full sm:w-auto px-10 py-4 text-lg 
                   border-2 border-white 
                   text-white 
@@ -242,7 +245,7 @@ export default function Home() {
                   focus:ring-opacity-50"
               >
                 <span className="font-semibold">Découvrir Plus</span>
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -267,7 +270,7 @@ export default function Home() {
       </div>
 
       {/* Services Section */}
-      <div className="relative z-20 bg-blue-50">
+      <div id="services" className="relative z-20 bg-blue-50">
         <ServicesSection />
       </div>
 
