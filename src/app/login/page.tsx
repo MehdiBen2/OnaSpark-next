@@ -95,19 +95,16 @@ export default function LoginPage() {
               alt="ONA Logo"
               width={350}
               height={180}
-              className="mx-auto mb-8 object-contain"
+              className="mx-auto mb-8 object-contain animate-slide-in-right"
             />
-            <h2 className="text-3xl font-bold">
-              {/* Text removed as requested */}
-            </h2>
             <p 
               key={cyclingText} 
-              className="text-lg opacity-80 transition-all duration-500 ease-in-out transform animate-fade-in"
+              className="text-xl opacity-80 transition-all duration-500 ease-in-out transform animate-fade-in"
             >
               {cyclingText}
             </p>
             <div className="border-t border-white/30 pt-6 mt-6">
-              <p className="text-sm opacity-70">
+              <p className="text-base opacity-70">
                 Votre plateforme de gestion et de suivi des infrastructures hydrauliques
               </p>
             </div>
