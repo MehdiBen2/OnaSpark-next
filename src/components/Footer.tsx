@@ -1,12 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
-  Github 
-} from 'react-bootstrap-icons';
 
 export default function Footer() {
   return (
@@ -21,32 +15,6 @@ export default function Footer() {
             <p className="text-gray-400 mb-6">
               Solution innovante pour la gestion intelligente de l'assainissement, transformant les données en insights stratégiques.
             </p>
-            <div className="flex space-x-4">
-              <a 
-                href="#" 
-                className="text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Facebook size={24} />
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Twitter size={24} />
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Linkedin size={24} />
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Github size={24} />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -153,7 +121,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-16 pt-8 border-t border-gray-800 text-center">
           <p className="text-gray-500">
-            © {new Date().getFullYear()} ONA SparK. Tous droits réservés.
+            {new Date().getFullYear()} ONA SparK. Tous droits réservés.
           </p>
         </div>
       </div>

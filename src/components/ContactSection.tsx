@@ -54,7 +54,7 @@ export default function ContactSection() {
             {/* Phone Contact */}
             <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
               <div className="flex justify-center mb-4">
-                <div className="bg-green-100 text-green-600 p-3 rounded-full">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
                   <Telephone size={32} />
                 </div>
               </div>
@@ -69,7 +69,7 @@ export default function ContactSection() {
             {/* Address */}
             <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
               <div className="flex justify-center mb-4">
-                <div className="bg-purple-100 text-purple-600 p-3 rounded-full">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
                   <GeoAlt size={32} />
                 </div>
               </div>
