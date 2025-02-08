@@ -86,9 +86,9 @@ export default function LoginPage() {
             src="/images/backrounds/bglogin.png"
             alt="ONA Water Infrastructure"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
             priority
-            quality={85}
+            quality={100}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
             className="w-full h-full object-cover"
