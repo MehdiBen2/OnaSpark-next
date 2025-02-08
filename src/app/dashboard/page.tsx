@@ -10,8 +10,7 @@ import {
   Users, 
   Clipboard, 
   Settings,
-  TrendingUp,
-  Award
+  TrendingUp
 } from 'lucide-react'
 
 const QuickAccessCard = ({ 
@@ -93,20 +92,13 @@ const DashboardBanner = ({ userName, role, department }: {
   })
 
   return (
-    <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 text-white overflow-hidden shadow-xl">
+    <div className="relative bg-gradient-to-br from-[#4a90e2] to-[#1a237e] text-white overflow-hidden shadow-xl">
       <div className="absolute inset-0 opacity-10">
         <TrendingUp className="w-full h-full text-white/20 transform rotate-45" />
       </div>
       
-      <div className="relative px-4 py-12 md:px-8 md:py-16 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between min-h-[300px]">
-        <div className="flex-1 mb-4 md:mb-0 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
-            <Award className="w-10 h-10 text-yellow-300" />
-            <span className="text-base font-medium bg-white/20 px-4 py-2 rounded-full">
-              {role}
-            </span>
-          </div>
-          
+      <div className="relative px-4 py-12 md:px-8 md:py-16 max-w-7xl mx-auto flex items-center justify-between min-h-[300px]">
+        <div className="flex-1 text-center md:text-left">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Bonjour, {userName}
           </h2>
@@ -114,18 +106,6 @@ const DashboardBanner = ({ userName, role, department }: {
           <p className="text-white/80 text-xl">
             {department} | {currentDate}
           </p>
-        </div>
-        
-        <div className="flex space-x-6">
-          <div className="bg-white/10 rounded-xl p-6 text-center">
-            <span className="block text-3xl font-bold text-yellow-300 mb-2">24</span>
-            <span className="text-sm text-white/70">Rapports</span>
-          </div>
-          
-          <div className="bg-white/10 rounded-xl p-6 text-center">
-            <span className="block text-3xl font-bold text-green-300 mb-2">5</span>
-            <span className="text-sm text-white/70">Notifications</span>
-          </div>
         </div>
       </div>
     </div>
