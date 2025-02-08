@@ -82,11 +82,11 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
           <div className="max-w-md text-center space-y-6">
             <Image
-              src="/images/Ona_Blogo.png"
+              src="/images/onalogos/sparkLogofull.png"
               alt="ONA Logo"
-              width={120}
-              height={120}
-              className="mx-auto mb-6"
+              width={350}
+              height={180}
+              className="mx-auto mb-8 object-contain"
             />
             <h2 className="text-3xl font-bold">
               Office National de l'Assainissement
@@ -107,7 +107,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-[#f0f4f8] dark:bg-[#1a2b3c]">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
