@@ -1,69 +1,83 @@
-'use client';
+'use client'
 
-import { useState, useEffect, FormEvent } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
-import Image from 'next/image';
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { z } from 'zod'
 
-// Input validation schema
 const LoginSchema = z.object({
   email: z.string().email('Email invalide'),
   password: z.string().min(1, 'Mot de passe requis')
-});
+})
+
+type LoginFormData = z.infer<typeof LoginSchema>
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
-  const router = useRouter();
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: '',
+    password: ''
+  })
+  const [error, setError] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [cyclingText, setCyclingText] = useState('Smart Platform for Advanced Reporting and Knowledge')
 
   // Cycling text animation
-  const [cyclingText, setCyclingText] = useState('Smart platform for reporting and knowledge');
-  const cycleTexts = [
-    'Smart platform for reporting and knowledge',
-    'Office National de l\'Assainissement',
-    'Système de Gestion Centralisée des Données',
-    'Plateforme Intelligente de Suivi Hydraulique'
-  ];
-
   useEffect(() => {
+    const texts = [
+      'Smart Platform for Advanced Reporting and Knowledge',
+      'Intelligent Water Management System',
+      'AI-Powered Water Quality Assessment',
+      'Comprehensive Organizational Tracking'
+    ]
+    let currentIndex = 0
+
     const interval = setInterval(() => {
-      const currentIndex = cycleTexts.indexOf(cyclingText);
-      const nextIndex = (currentIndex + 1) % cycleTexts.length;
-      setCyclingText(cycleTexts[nextIndex]);
-    }, 3000);
+      currentIndex = (currentIndex + 1) % texts.length
+      setCyclingText(texts[currentIndex])
+    }, 5000)
 
-    return () => clearInterval(interval);
-  }, [cyclingText]);
+    return () => clearInterval(interval)
+  }, [])
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrors({});
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError('')
+    setIsLoading(true)
 
     try {
-      const validatedData = LoginSchema.parse({ email, password });
-      // TODO: Implement actual authentication
-      if (validatedData.email === 'admin@onaspark.dz' && validatedData.password === 'password') {
-        router.push('/home');
-      } else {
-        setErrors({ general: 'Identifiants incorrects' });
+      // Validate form data
+      const validatedData = LoginSchema.parse(formData)
+
+      // Attempt to sign in
+      const result = await signIn('credentials', {
+        email: validatedData.email,
+        password: validatedData.password,
+        redirect: false
+      })
+
+      if (result?.error) {
+        setError('Email ou mot de passe incorrect')
+      } else if (result?.ok) {
+        router.push(callbackUrl)
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        const fieldErrors = err.flatten().fieldErrors;
-        setErrors({
-          email: fieldErrors.email?.[0],
-          password: fieldErrors.password?.[0]
-        });
+        setError(err.errors[0].message)
       } else {
-        setErrors({ general: 'Une erreur est survenue' });
+        setError('Une erreur est survenue')
       }
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex">
+    <main className="flex min-h-screen">
       {/* Left Sidebar with Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <div className="absolute inset-0 z-0">
@@ -112,83 +126,71 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-[#f0f4f8] dark:bg-[#1a2b3c]">
+      {/* Right Side - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#f0f4f8] dark:bg-gray-900">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Connexion à l'Office
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Connexion
             </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-              Veuillez vous connecter pour accéder à votre tableau de bord
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Accédez à votre espace de travail
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Adresse email
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-                  ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-                placeholder="vous@example.com"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-                  ${errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-                placeholder="••••••••"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-              )}
-            </div>
-
-            {errors.general && (
-              <div className="text-center text-red-500 text-sm">
-                {errors.general}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            {error && (
+              <div className="p-3 text-sm text-red-500 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                {error}
               </div>
             )}
+            
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md 
-                hover:bg-blue-700 transition-colors duration-300 
-                focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Se connecter
-            </button>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Mot de passe
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={formData.password}
+                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
 
-            <div className="text-center">
-              <Link 
-                href="/forgot-password" 
-                className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
-                Mot de passe oublié ?
-              </Link>
+                {isLoading ? 'Connexion...' : 'Se connecter'}
+              </button>
             </div>
           </form>
         </div>
       </div>
-    </div>
-  );
+    </main>
+  )
 }
