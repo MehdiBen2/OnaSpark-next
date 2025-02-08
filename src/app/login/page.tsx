@@ -130,84 +130,83 @@ export default function LoginPage() {
       {/* Right Side - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#f0f4f8] dark:bg-gray-900">
         <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Connexion
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Accédez à votre espace de travail
+          <div className="space-y-6">
+            <h1 className="text-3xl font-bold text-gray-900 text-center">
+              Connexion à l'Office
+            </h1>
+            <p className="text-md text-gray-600 text-center mb-6">
+              Accédez à la plateforme ONA Spark
             </p>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="p-3 text-sm text-red-500 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                  {error}
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Votre email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Mot de passe
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  {isLoading ? 'Connexion...' : 'Se connecter'}
+                </button>
+              </div>
+
+              <div className="relative flex items-center justify-center my-6">
+                <div className="absolute left-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 left-0 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
+                <div className="absolute right-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 right-0 bg-gradient-to-r from-gray-300 via-gray-300 to-transparent"></div>
+                <span className="relative z-10 px-4 text-gray-500 font-medium text-sm uppercase tracking-wider">
+                  Ou
+                </span>
+              </div>
+
+              <div className="text-center mt-4">
+                <button 
+                  type="button"
+                  onClick={() => router.push('/')}
+                  className="w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                >
+                  Retour à l'accueil
+                </button>
+              </div>
+            </form>
           </div>
-
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-            {error && (
-              <div className="p-3 text-sm text-red-500 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                {error}
-              </div>
-            )}
-            
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Mot de passe
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-              >
-                {isLoading ? 'Connexion...' : 'Se connecter'}
-              </button>
-            </div>
-
-            <div className="relative flex items-center justify-center my-6">
-              <div className="absolute left-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 left-0 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
-              <div className="absolute right-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 right-0 bg-gradient-to-r from-gray-300 via-gray-300 to-transparent"></div>
-              <span className="relative z-10 px-4 text-gray-500 font-medium text-sm uppercase tracking-wider">
-                Ou
-              </span>
-            </div>
-
-            <div className="text-center mt-4">
-              <button 
-                type="button"
-                onClick={() => router.push('/')}
-                className="w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-              >
-                Retour à l'accueil
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </main>
