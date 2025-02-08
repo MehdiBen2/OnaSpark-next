@@ -52,15 +52,8 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <div id="services" className="container mx-auto px-6 py-16">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-          Nos Services
-        </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Découvrez comment ONA Spark transforme la gestion de l'assainissement grâce à des solutions innovantes et des technologies de pointe.
-        </p>
-      </div>
+   
+      
 
       <section 
         className="relative py-20 overflow-hidden bg-cover bg-center"
@@ -160,6 +153,6 @@ export default function ServicesSection() {
           </div>
         </div>
       </section>
-    </div>
+  
   );
 }

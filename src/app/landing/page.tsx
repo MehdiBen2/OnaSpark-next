@@ -296,8 +296,8 @@ export default function Home() {
               
               <button 
                 onClick={() => {
-                  const servicesSection = document.getElementById('services');
-                  servicesSection?.scrollIntoView({ behavior: 'smooth' });
+                  const aboutSection = document.getElementById('about');
+                  aboutSection?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="w-full sm:w-auto px-10 py-4 text-lg 
                   border-2 border-white 
