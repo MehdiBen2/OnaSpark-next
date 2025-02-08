@@ -86,6 +86,65 @@ const QuickAccessCard = ({
   </Link>
 )
 
+const AnimatedBalls = () => {
+  const ballVariants = {
+    initial: { 
+      opacity: 0, 
+      scale: 0.5,
+      rotate: -30,
+      x: 100,
+      y: -50 
+    },
+    animate: (i: number) => ({
+      opacity: 0.8,
+      scale: 1,
+      rotate: 0,
+      x: 0,
+      y: 0,
+      transition: {
+        delay: i * 0.2,
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+      }
+    }),
+    hover: {
+      scale: 1.1,
+      rotate: 5,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+      }
+    }
+  }
+
+  const ballColors = [
+    "bg-[#c5d301]/50 backdrop-blur-md",
+    "bg-[#1e7ec2]/50 backdrop-blur-md",
+    "bg-[#cae7f0]/50 backdrop-blur-md"
+  ]
+
+  return (
+    <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
+      {ballColors.map((color, index) => (
+        <motion.div
+          key={index}
+          className={`absolute w-72 h-72 rounded-full ${color}`}
+          style={{
+            top: `${-50 + index * 180}px`,
+            right: `${-150 + index * 180}px`,
+          }}
+          variants={ballVariants}
+          initial="initial"
+          animate="animate"
+          whileHover="hover"
+          custom={index}
+        />
+      ))}
+    </div>
+  )
+}
+
 const DashboardBanner = ({ userName, role, department }: { 
   userName: string, 
   role: string, 
@@ -100,6 +159,9 @@ const DashboardBanner = ({ userName, role, department }: {
 
   return (
     <div className="relative bg-gradient-to-br from-[#4a90e2] to-[#1a237e] text-white overflow-hidden shadow-2xl">
+      {/* Animated Balls */}
+      <AnimatedBalls />
+      
       {/* Animated Background Elements */}
       <div className="absolute inset-0 opacity-20 overflow-hidden">
         <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full animate-pulse"></div>
