@@ -94,13 +94,13 @@ export default function LoginPage() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="absolute top-4 right-4 z-20">
+        <div className="absolute top-0 left-0 right-0 z-20 flex justify-end p-4">
           <Image
             src="/images/backrounds/phasetest.png"
             alt="Test Phase"
-            width={500}
+            width={300}
             height={100}
-            className="absolute top-4 right-4 z-20 object-contain"
+            className="object-contain"
           />
         </div>
         <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
