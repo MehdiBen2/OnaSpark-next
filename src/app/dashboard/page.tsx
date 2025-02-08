@@ -10,8 +10,14 @@ import {
   Users, 
   Clipboard, 
   Settings,
-  TrendingUp
+  TrendingUp,
+  Clock,
+  MapPin,
+  Plus,
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const QuickAccessCard = ({ 
   icon: Icon, 
@@ -92,20 +98,46 @@ const DashboardBanner = ({ userName, role, department }: {
   })
 
   return (
-    <div className="relative bg-gradient-to-br from-[#4a90e2] to-[#1a237e] text-white overflow-hidden shadow-xl">
-      <div className="absolute inset-0 opacity-10">
-        <TrendingUp className="w-full h-full text-white/20 transform rotate-45" />
+    <div className="relative bg-gradient-to-br from-[#4a90e2] to-[#1a237e] text-white overflow-hidden shadow-2xl">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 opacity-20 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full animate-pulse"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full animate-pulse animation-delay-2000"></div>
       </div>
       
-      <div className="relative px-4 py-12 md:px-8 md:py-16 max-w-7xl mx-auto flex items-center justify-between min-h-[300px]">
-        <div className="flex-1 text-center md:text-left">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Bonjour, {userName}
-          </h2>
-          
-          <p className="text-white/80 text-xl">
-            {department} | {currentDate}
-          </p>
+      {/* Subtle Grid Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-10"></div>
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(0deg,transparent_24%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_26%,transparent_27%,transparent_74%,rgba(255,255,255,0.05)_75%,rgba(255,255,255,0.05)_76%,transparent_77%,transparent)] bg-[length:4rem_4rem]"></div>
+      </div>
+
+      <div className="relative px-4 py-16 md:px-8 md:py-20 max-w-7xl mx-auto flex items-center justify-between min-h-[350px]">
+        <div className="flex-1 text-center md:text-left relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 drop-shadow-lg">
+              Bonjour, {userName}
+            </h2>
+            
+            <div className="flex items-center justify-center md:justify-start space-x-4 text-white/80">
+              <Clock className="w-6 h-6 opacity-70" />
+              <p className="text-xl font-medium tracking-wide">
+                {currentDate}
+              </p>
+            </div>
+            
+            {department && (
+              <div className="mt-4 flex items-center justify-center md:justify-start space-x-3">
+                <MapPin className="w-6 h-6 opacity-70" />
+                <span className="text-lg font-medium text-white/90">
+                  {department}
+                </span>
+              </div>
+            )}
+          </motion.div>
         </div>
       </div>
     </div>

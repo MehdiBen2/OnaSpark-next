@@ -13,8 +13,8 @@ export default auth((req) => {
     '/favicon.ico',
   ].some(path => req.nextUrl.pathname.startsWith(path))
 
-  // Allow access to landing and public routes
-  if (isOnLandingPage || isOnPublicRoute) {
+  // Allow access to landing, login, and public routes without authentication
+  if (isOnLandingPage || isOnLoginPage || isOnPublicRoute) {
     return NextResponse.next()
   }
 
@@ -23,8 +23,8 @@ export default auth((req) => {
     return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
   }
 
-  // Redirect non-logged-in users to login page
-  if (!isLoggedIn && !isOnLoginPage) {
+  // Redirect non-logged-in users to login page for protected routes
+  if (!isLoggedIn) {
     const loginUrl = new URL('/login', req.nextUrl)
     loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname)
     return NextResponse.redirect(loginUrl)
