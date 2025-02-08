@@ -3,6 +3,8 @@
 import React from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FileText, 
   Bell, 
@@ -17,7 +19,6 @@ import {
   ArrowRight,
   ArrowLeft
 } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
 
 const QuickAccessCard = ({ 
   icon: Icon, 
@@ -118,7 +119,7 @@ const DashboardBanner = ({ userName, role, department }: {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 drop-shadow-lg">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 drop-shadow-lg">
               Bonjour, {userName}
             </h2>
             
@@ -138,6 +139,16 @@ const DashboardBanner = ({ userName, role, department }: {
               </div>
             )}
           </motion.div>
+        </div>
+        
+        <div className="hidden md:block -mr-16">
+          <Image 
+            src="/images/onalogos/sparkLogofull.png" 
+            alt="ONA Spark Logo" 
+            width={350} 
+            height={120} 
+            className="max-w-[350px] opacity-90"
+          />
         </div>
       </div>
     </div>
