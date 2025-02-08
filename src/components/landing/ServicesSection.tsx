@@ -56,13 +56,13 @@ export default function ServicesSection() {
       
 
       <section 
-        className="relative py-20 overflow-hidden bg-cover bg-center"
+        className="relative py-20 overflow-hidden bg-cover bg-center min-h-screen flex items-center"
         style={{ 
           backgroundImage: 'url("/images/backrounds/ona2.png")',
-          backgroundBlendMode: 'soft-light'
+          backgroundBlendMode: 'overlay'
         }}
       >
-        <div className="absolute inset-0 bg-blue-50/10"></div>
+        <div className="absolute inset-0 bg-blue-50/30"></div>
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -92,22 +92,19 @@ export default function ServicesSection() {
                 viewport={{ once: true }}
                 className="group h-full"
               >
-                <div className="bg-white 
+                <div className="bg-white/90 backdrop-blur-sm
                   rounded-2xl 
-                  p-6 
+                  p-8
                   shadow-lg 
                   hover:shadow-2xl 
                   transition-all 
                   duration-300 
-                  transform 
-                  hover:-translate-y-3 
-                  border 
-                  border-gray-100 
-                  relative 
-                  overflow-hidden
                   h-full
                   flex
-                  flex-col"
+                  flex-col
+                  justify-between
+                  hover:transform hover:scale-105
+                "
                 >
                   <div className="absolute -top-10 -right-10 
                     w-24 h-24 

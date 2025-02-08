@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import { auth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -29,10 +30,17 @@ export default async function RootLayout({
     <html lang="fr" className={`${GeistSans.className} ${roboto.className}`}>
       <body className="min-h-screen bg-gray-50">
         <SessionProvider session={session}>
-          <Navbar />
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
+          {!session && (
+            <main>{children}</main>
+          )}
+          {session && (
+            <>
+              <Navbar />
+              <main className="container mx-auto px-4 py-8">
+                {children}
+              </main>
+            </>
+          )}
         </SessionProvider>
       </body>
     </html>

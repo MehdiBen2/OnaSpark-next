@@ -17,7 +17,7 @@ type LoginFormData = z.infer<typeof LoginSchema>
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
