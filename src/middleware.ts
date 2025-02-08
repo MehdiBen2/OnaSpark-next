@@ -18,9 +18,9 @@ export default auth((req) => {
     return NextResponse.next()
   }
 
-  // Redirect logged-in users away from login page
+  // Redirect logged-in users away from login page to dashboard
   if (isLoggedIn && isOnLoginPage) {
-    return NextResponse.redirect(new URL('/', req.nextUrl))
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
   }
 
   // Redirect non-logged-in users to login page

@@ -6,6 +6,12 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-roboto: 'Roboto', sans-serif;
+  --ona-primary: #356ee7;     /* Modern bright blue */
+  --ona-secondary: #173aaa;    /* Deep blue */
+  --ona-accent: #95C11F;       /* ONA Green */
+  --ona-dark: #2b2d42;
+  --ona-light: #f8f9fa;
+  --transition: all 0.3s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,4 +25,116 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-roboto), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Modern Navbar Styles */
+.navbar {
+  background: linear-gradient(135deg, var(--ona-primary) 0%, var(--ona-secondary) 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 56px; /* Fixed height to match sidebar positioning */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-right: 2rem;
+}
+
+.navbar-brand img {
+  height: 40px;
+  width: auto;
+  transition: var(--transition);
+  filter: brightness(0) invert(1);
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.navbar-toggler {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.navbar-toggler:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 50px;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: white;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: var(--transition);
+  color: var(--ona-dark);
+}
+
+.dropdown-item:hover {
+  background: var(--ona-light);
+  color: var(--ona-primary);
+}
+
+.user-info {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-right: 1rem;
+}
+
+.user-info i {
+  font-size: 1.1rem;
+}
+
+.logout-btn {
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.logout-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
 }
