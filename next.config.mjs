@@ -29,12 +29,35 @@ const nextConfig = {
   // Optional: Configure experimental features
   experimental: {
     // Increase memory limit for the build process
+    optimizePackageImports: ['next/image'],
     serverComponentsExternalPackages: ['sharp']
   },
   // Optional: Configure webpack if necessary
   webpack: (config) => {
     return config;
-  }
+  },
+  async headers() {
+    return [
+      {
+        source: '/images/backrounds/bglogin.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/landingcarouselle/:slug*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

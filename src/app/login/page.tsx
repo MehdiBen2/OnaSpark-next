@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -70,10 +70,13 @@ export default function LoginPage() {
           <Image
             src="/images/backrounds/bglogin.png"
             alt="ONA Water Infrastructure"
-            layout="fill"
-            objectFit="cover"
-            className="w-full h-full"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
+            quality={85}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+            className="w-full h-full object-cover"
           />
         </div>
         <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
