@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, router } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { z } from 'zod'
+import Link from 'next/link'
 
 const LoginSchema = z.object({
   email: z.string().email('Email invalide'),
@@ -29,10 +30,10 @@ export default function LoginPage() {
   // Cycling text animation
   useEffect(() => {
     const texts = [
-      'Smart Platform for Advanced Reporting and Knowledge',
-      'Intelligent Water Management System',
-      'AI-Powered Water Quality Assessment',
-      'Comprehensive Organizational Tracking'
+      'Plateforme intelligente pour le reporting avancé et la connaissance',
+      'Système intelligent de gestion de l\'eau',
+      'Évaluation de la qualité de l\'eau assistée par IA',
+      'Suivi organisationnel complet'
     ]
     let currentIndex = 0
 
@@ -95,11 +96,11 @@ export default function LoginPage() {
         </div>
         <div className="absolute top-4 right-4 z-20">
           <Image
-            src="/images/backrounds/testphase.png"
+            src="/images/backrounds/phasetest.png"
             alt="Test Phase"
             width={500}
-            height={500}
-            className="object-contain opacity-50"
+            height={100}
+            className="absolute top-4 right-4 z-20 object-contain"
           />
         </div>
         <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
@@ -186,6 +187,24 @@ export default function LoginPage() {
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 {isLoading ? 'Connexion...' : 'Se connecter'}
+              </button>
+            </div>
+
+            <div className="relative flex items-center justify-center my-6">
+              <div className="absolute left-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 left-0 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
+              <div className="absolute right-0 w-[calc(50%-40px)] h-[1.5px] top-1/2 right-0 bg-gradient-to-r from-gray-300 via-gray-300 to-transparent"></div>
+              <span className="relative z-10 px-4 text-gray-500 font-medium text-sm uppercase tracking-wider">
+                Ou
+              </span>
+            </div>
+
+            <div className="text-center mt-4">
+              <button 
+                type="button"
+                onClick={() => router.push('/')}
+                className="w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              >
+                Retour à l'accueil
               </button>
             </div>
           </form>

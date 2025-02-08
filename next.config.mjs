@@ -10,9 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverExternalPackages: ['sharp']
-  }
+  // Removed invalid experimental configuration
 }
 
 export default nextConfig
