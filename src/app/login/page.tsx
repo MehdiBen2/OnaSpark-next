@@ -79,6 +79,15 @@ export default function LoginPage() {
             className="w-full h-full object-cover"
           />
         </div>
+        <div className="absolute top-4 right-4 z-20">
+          <Image
+            src="/images/backrounds/testphase.png"
+            alt="Test Phase"
+            width={500}
+            height={500}
+            className="object-contain opacity-50"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/50 z-10 flex flex-col justify-center items-center text-white p-12">
           <div className="max-w-md text-center space-y-6">
             <Image
@@ -89,7 +98,7 @@ export default function LoginPage() {
               className="mx-auto mb-8 object-contain"
             />
             <h2 className="text-3xl font-bold">
-              Office National de l'Assainissement
+              {/* Text removed as requested */}
             </h2>
             <p 
               key={cyclingText} 
