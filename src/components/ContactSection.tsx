@@ -11,90 +11,77 @@ export default function ContactSection() {
   return (
     <section 
       id="contact" 
-      className="relative py-24 bg-gradient-to-br from-gray-100 to-gray-200"
+      className="relative py-32 overflow-hidden"
+      style={{ 
+        backgroundImage: 'url("/images/backrounds/ona2.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center mb-16"
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="text-4xl font-bold mb-6 text-gray-800">
-            Contactez-nous
-          </h2>
-          <p className="text-xl text-gray-600">
-            Nous sommes là pour répondre à vos questions et vous accompagner
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Address */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <div className="flex items-center mb-6">
-              <div className="bg-blue-100 text-blue-600 p-4 rounded-full mr-4">
-                <GeoAlt size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800">
-                Adresse
-              </h3>
-            </div>
-            <p className="text-gray-600">
-              Carrefour Sidi Arcine<br />
-              Route de Baraki<br />
-              Alger
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4 text-gray-800">
+              Contactez-nous
+            </h2>
+            <p className="text-lg max-w-2xl mx-auto text-gray-600">
+              Nous sommes là pour répondre à vos questions et vous aider.
             </p>
-          </motion.div>
+          </div>
 
-          {/* Phone */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <div className="flex items-center mb-6">
-              <div className="bg-green-100 text-green-600 p-4 rounded-full mr-4">
-                <Telephone size={32} />
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Email Contact */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
+              <div className="flex justify-center mb-4">
+                <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
+                  <Envelope size={32} />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800">
-                Téléphone
-              </h3>
-            </div>
-            <p className="text-gray-600">
-              Pas encore déployé
-            </p>
-          </motion.div>
-
-          {/* Email */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <div className="flex items-center mb-6">
-              <div className="bg-purple-100 text-purple-600 p-4 rounded-full mr-4">
-                <Envelope size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 Email
               </h3>
+              <p className="text-gray-600">
+                Onahelper@gmail.com
+              </p>
             </div>
-            <p className="text-gray-600">
-              Onahelper@gmail.com
-            </p>
-          </motion.div>
-        </div>
+
+            {/* Phone Contact */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
+              <div className="flex justify-center mb-4">
+                <div className="bg-green-100 text-green-600 p-3 rounded-full">
+                  <Telephone size={32} />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Téléphone
+              </h3>
+              <p className="text-gray-600">
+                +213 (0) 123 456 789
+              </p>
+            </div>
+
+            {/* Address */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
+              <div className="flex justify-center mb-4">
+                <div className="bg-purple-100 text-purple-600 p-3 rounded-full">
+                  <GeoAlt size={32} />
+                </div>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Adresse
+              </h3>
+              <p className="text-gray-600">
+                Rue des Frères Bouadja, El Harrach, Alger
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
