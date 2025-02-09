@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { 
@@ -59,13 +61,21 @@ const COLOR_CONFIGS: Record<string, ColorConfig> = {
   }
 }
 
-const DepartementCard = ({ 
+type DepartementCardProps = {
+  title: string
+  description: string
+  icon: any
+  subItems: Array<{ value: string }>
+  href: string
+}
+
+function DepartementCard({ 
   title, 
   description, 
   icon: Icon, 
   subItems, 
   href 
-}) => {
+}: DepartementCardProps) {
   // Determine color configuration based on title
   const colorKey = title.toLowerCase()
     .replace(/\s+/g, '')
@@ -124,7 +134,7 @@ const DepartementCard = ({
   )
 }
 
-const DepartementBanner = () => {
+function DepartementBanner() {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-[#4a90e2] to-[#1a237e] py-20 text-white">
       {/* Background Pattern */}
@@ -187,42 +197,42 @@ export default function DepartementsPage() {
       description: 'Gestion opérationnelle et maintenance des infrastructures',
       icon: Wrench,
       subItems: [{ value: '5 projets actifs' }],
-      href: '/departement/exploitation'
+      href: '/departements/exploitation'
     },
     {
       title: 'Ressources Humaines',
       description: 'Développement et gestion du capital humain',
       icon: Users,
       subItems: [{ value: '120 employés' }],
-      href: '/departement/ressources-humaines'
+      href: '/departements/ressources-humaines'
     },
     {
       title: 'Finance',
       description: 'Gestion financière et optimisation budgétaire',
       icon: BarChart2,
       subItems: [{ value: '4 rapports financiers' }],
-      href: '/departement/finance'
+      href: '/departements/finance'
     },
     {
       title: 'Sécurité',
       description: 'Protection et prévention des risques opérationnels',
       icon: Shield,
       subItems: [{ value: '3 alertes de sécurité' }],
-      href: '/departement/securite'
+      href: '/departements/securite'
     },
     {
       title: 'Stratégie et Performance',
       description: 'Analyse stratégique et amélioration continue',
       icon: FileText,
       subItems: [{ value: '2 initiatives stratégiques' }],
-      href: '/departement/strategie-performance'
+      href: '/departements/strategie-performance'
     },
     {
       title: 'Recherche et Innovation',
       description: 'Développement de solutions technologiques avancées pour l\'assainissement',
       icon: Beaker,
       subItems: [{ value: '7 projets de recherche' }],
-      href: '/departement/recherche-innovation'
+      href: '/departements/recherche-innovation'
     }
   ]
 

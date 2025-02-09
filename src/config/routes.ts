@@ -1,113 +1,93 @@
 import { 
-  Building2, 
   Wrench, 
-  Recycle, 
-  Wallet, 
   Users, 
-  Shield 
+  BarChart2, 
+  Shield, 
+  FileText,
+  Beaker
 } from 'lucide-react'
 
 export const ROUTES = {
-  landing: '/',
   dashboard: '/dashboard',
-  departements: '/departements',
+  departements: '/departements/departementspage',
   departementExploitation: '/departements/exploitation',
-  departementExploitationRapports: '/departements/exploitation/rapports',
-  departementExploitationMaintenance: '/departements/exploitation/maintenance',
-  departementRessourcesHumaines: '/departements/ressources-humaines',
-  departementFinance: '/departements/finance',
-  departementSecurite: '/departements/securite',
-  departementStrategiePerformance: '/departements/strategie-performance',
-  departementRechercheInnovation: '/departements/recherche-innovation',
-  departements: {
+  departementRapports: '/departements/exploitation/rapports',
+  oldRoutes: {
+    exploitation: '/departement/exploitation',
+    exploitationRapports: '/departement/exploitation/rapports'
+  },
+  departement: {
     root: '/departements',
     list: '/departements/departementspage',
-    moyensGeneraux: {
-      root: '/departements/moyens-generaux',
-      path: '/departements/moyens-generaux',
-      icon: Building2,
-      title: 'Moyens Généraux',
-      description: 'Gestion des ressources matérielles et logistiques',
-      subRoutes: [
-        { name: 'Infrastructure', path: '/departements/moyens-generaux/infrastructure' },
-        { name: 'Transport', path: '/departements/moyens-generaux/transport' },
-        { name: 'Stock', path: '/departements/moyens-generaux/stock' }
-      ]
-    },
     exploitation: {
       root: '/departements/exploitation',
       path: '/departements/exploitation',
       icon: Wrench,
-      title: 'Exploitation et Maintenance',
-      description: 'Supervision des opérations et maintenance',
+      title: 'Exploitation',
+      description: 'Gestion opérationnelle et maintenance des infrastructures',
       subRoutes: [
         { name: 'Rapports', path: '/departements/exploitation/rapports' },
-        { name: 'Maintenance', path: '/departements/exploitation/maintenance' },
-        { name: 'Surveillance', path: '/departements/exploitation/surveillance' },
-        { name: 'Performance', path: '/departements/exploitation/performance' }
+        { name: 'Maintenance', path: '/departements/exploitation/maintenance' }
       ]
     },
-    reuse: {
-      root: '/departements/reuse',
-      path: '/departements/reuse',
-      icon: Recycle,
-      title: 'REUSE',
-      description: 'Réutilisation de l\'eau après épuration',
+    ressourcesHumaines: {
+      root: '/departements/ressources-humaines',
+      path: '/departements/ressources-humaines',
+      icon: Users,
+      title: 'Ressources Humaines',
+      description: 'Développement et gestion du capital humain',
       subRoutes: [
-        { name: 'Réglementations', path: '/departements/reuse/reglementations' },
-        { name: 'Qualité de l\'eau', path: '/departements/reuse/qualite-eau' },
-        { name: 'Informations', path: '/departements/reuse/informations' }
+        { name: 'Personnel', path: '/departements/ressources-humaines/personnel' },
+        { name: 'Formation', path: '/departements/ressources-humaines/formation' }
       ]
     },
     finance: {
       root: '/departements/finance',
       path: '/departements/finance',
-      icon: Wallet,
+      icon: BarChart2,
       title: 'Finance',
-      description: 'Gestion financière et comptable',
+      description: 'Gestion financière et optimisation budgétaire',
       subRoutes: [
-        { name: 'Comptabilité', path: '/departements/finance/comptabilite' },
-        { name: 'Budget', path: '/departements/finance/budget' },
-        { name: 'Factures', path: '/departements/finance/factures' }
+        { name: 'Rapports Financiers', path: '/departements/finance/rapports' },
+        { name: 'Budget', path: '/departements/finance/budget' }
       ]
     },
-    drh: {
-      root: '/departements/drh',
-      path: '/departements/drh',
-      icon: Users,
-      title: 'DRH',
-      description: 'Gestion des ressources humaines',
-      subRoutes: [
-        { name: 'Personnel', path: '/departements/drh/personnel' },
-        { name: 'Formation', path: '/departements/drh/formation' },
-        { name: 'Évaluation', path: '/departements/drh/evaluation' }
-      ]
-    },
-    hse: {
-      root: '/departements/hse',
-      path: '/departements/hse',
+    securite: {
+      root: '/departements/securite',
+      path: '/departements/securite',
       icon: Shield,
-      title: 'HSE',
-      description: 'Hygiène, Sécurité et Environnement',
+      title: 'Sécurité',
+      description: 'Protection et prévention des risques opérationnels',
       subRoutes: [
-        { name: 'Sécurité', path: '/departements/hse/securite' },
-        { name: 'Environnement', path: '/departements/hse/environnement' },
-        { name: 'Santé', path: '/departements/hse/sante' }
+        { name: 'Alertes', path: '/departements/securite/alertes' },
+        { name: 'Prévention', path: '/departements/securite/prevention' }
       ]
     },
-    departementExploitationRapports: {
-      root: '/departements/exploitation/rapports',
+    strategieEtPerformance: {
+      root: '/departements/strategie-performance',
+      path: '/departements/strategie-performance',
+      icon: FileText,
+      title: 'Stratégie et Performance',
+      description: 'Analyse stratégique et amélioration continue',
       subRoutes: [
-        { name: 'Incidents', path: '/departements/exploitation/rapports/incidents' },
-        { name: 'Rapports Journaliers', path: '/departements/exploitation/rapports/journaliers' },
-        { name: 'Rapports Mensuels', path: '/departements/exploitation/rapports/mensuels' },
-        { name: 'Statistiques', path: '/departements/exploitation/rapports/statistiques' },
-        { name: 'KPIs', path: '/departements/exploitation/rapports/kpis' }
+        { name: 'Initiatives', path: '/departements/strategie-performance/initiatives' },
+        { name: 'KPIs', path: '/departements/strategie-performance/kpis' }
+      ]
+    },
+    rechercheEtInnovation: {
+      root: '/departements/recherche-innovation',
+      path: '/departements/recherche-innovation',
+      icon: Beaker,
+      title: 'Recherche et Innovation',
+      description: 'Développement de solutions technologiques avancées',
+      subRoutes: [
+        { name: 'Projets', path: '/departements/recherche-innovation/projets' },
+        { name: 'Laboratoire', path: '/departements/recherche-innovation/laboratoire' }
       ]
     }
   }
 }
 
-export const getRouteConfig = (route: keyof typeof ROUTES.departements) => {
-  return ROUTES.departements[route]
+export function getRouteConfig(route: keyof typeof ROUTES.departement) {
+  return ROUTES.departement[route]
 }
