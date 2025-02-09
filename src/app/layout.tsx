@@ -1,22 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 import { GeistSans } from "geist/font/sans";
-import { Roboto } from "next/font/google";
 import { auth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-roboto",
-});
-
 export const metadata: Metadata = {
-  title: "ONA Spark",
-  description: "Plateforme interne de l'Office National de l'Assainissement",
-};
+  title: 'ONA Spark',
+  description: 'Plateforme interne de l\'Office National de l\'Assainissement',
+}
 
 export default async function RootLayout({
   children,
@@ -31,7 +23,10 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="fr" className={`${GeistSans.className} ${roboto.className}`}>
+    <html 
+      lang="fr" 
+      className={GeistSans.className}
+    >
       <body className="min-h-screen bg-gray-50">
         <SessionProvider session={session}>
           {session ? (

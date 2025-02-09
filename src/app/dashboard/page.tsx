@@ -3,28 +3,11 @@
 import React from 'react'
 import type { Session } from 'next-auth'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { 
-  FileText, 
-  Bell, 
-  BarChart2, 
-  Users, 
-  Clipboard, 
-  Settings,
-  TrendingUp,
   Clock,
-  MapPin,
-  Plus,
-  ArrowRight,
-  ArrowLeft,
-  Shield,
-  ChevronUp,
-  ChevronDown,
-  Calendar,
-  Mail,
-  Circle
+  MapPin
 } from 'lucide-react'
 
 const AnimatedBalls = () => {

@@ -13,6 +13,33 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        'roboto': ['var(--font-roboto)', 'sans-serif'],
+        'roboto-condensed': ['var(--font-roboto-condensed)', 'sans-serif'],
+        'roboto-slab': ['var(--font-roboto-slab)', 'serif'],
+        'sans': [
+          'Segoe UI', 
+          'ui-sans-serif', 
+          'system-ui', 
+          '-apple-system', 
+          'BlinkMacSystemFont', 
+          'Roboto', 
+          'Helvetica Neue', 
+          'Arial', 
+          'sans-serif'
+        ],
+        'segoe': [
+          'Segoe UI', 
+          'ui-sans-serif', 
+          'system-ui', 
+          '-apple-system', 
+          'BlinkMacSystemFont', 
+          'Roboto', 
+          'Helvetica Neue', 
+          'Arial', 
+          'sans-serif'
+        ]
+      },
     },
   },
   plugins: [],
