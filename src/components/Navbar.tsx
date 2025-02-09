@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { signOut, getSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,13 +13,20 @@ import {
   faUser, 
   faBook, 
   faSignOutAlt,
-  faShieldAlt,
-  faChevronDown,
-  faUsers,
-  faCog,
   faBars,
   faTimes
 } from '@fortawesome/free-solid-svg-icons'
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle, 
+  AlertDialogTrigger 
+} from '@/components/ui/alert-dialog'
 
 export default function Navbar () {
   const pathname = usePathname()
@@ -31,6 +38,7 @@ export default function Navbar () {
   useEffect(() => {
     const fetchSession = async () => {
       try {
+        const { getSession } = await import('next-auth/react')
         const sessionData = await getSession()
         setSession(sessionData)
       } catch (error) {
@@ -42,7 +50,7 @@ export default function Navbar () {
     fetchSession()
   }, [])
 
-  // Close dropdowns when clicking outside
+  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
@@ -124,17 +132,26 @@ export default function Navbar () {
   }
 
   return (
-    <nav 
+    <motion.nav 
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ 
+        type: 'spring', 
+        stiffness: 300, 
+        damping: 20,
+        duration: 0.5
+      }}
       className="fixed top-0 left-0 right-0 z-50 
       text-white 
       shadow-md 
-      transition-all duration-300"
+      transition-all duration-300 
+      flex justify-center"
       style={{ 
         background: 'linear-gradient(135deg, var(--ona-primary) 0%, var(--ona-secondary) 100%)', 
         height: '64px' 
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center h-full">
+      <div className="w-full max-w-7xl px-4 py-2 flex justify-between items-center h-full">
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center -my-4">
           <Link href="/dashboard" className="flex items-center">
@@ -162,14 +179,31 @@ export default function Navbar () {
               <FontAwesomeIcon icon={faUser} className="h-4 w-4 mr-2" />
               {session.user.displayName || session.user.name || session.user.email}
             </span>
-            <button 
-              onClick={() => signOut({ callbackUrl: '/login' })}
-              className="px-3 py-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
-              aria-label="Déconnexion"
-              title="Déconnexion"
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
-            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button 
+                  className="px-3 py-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
+                  aria-label="Déconnexion"
+                  title="Déconnexion"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Êtes-vous sûr de vouloir vous déconnecter ?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Vous allez être redirigé vers la page de connexion. Toute session non enregistrée sera perdue.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => signOut({ callbackUrl: '/login' })}>
+                    Se déconnecter
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
 
@@ -198,19 +232,36 @@ export default function Navbar () {
             <div className="px-4 pt-2 pb-4 space-y-2">
               <NavLinks />
               <div className="pt-4 mt-4 border-t border-white/20">
-                <button 
-                  onClick={() => signOut({ callbackUrl: '/login' })}
-                  className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center justify-center"
-                  aria-label="Déconnexion"
-                  title="Déconnexion"
-                >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button 
+                      className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center justify-center"
+                      aria-label="Déconnexion"
+                      title="Déconnexion"
+                    >
+                      <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Êtes-vous sûr de vouloir vous déconnecter ?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Vous allez être redirigé vers la page de connexion. Toute session non enregistrée sera perdue.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => signOut({ callbackUrl: '/login' })}>
+                        Se déconnecter
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   )
 }
