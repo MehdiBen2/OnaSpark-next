@@ -54,7 +54,18 @@ export default function Navbar () {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const isActive = (path) => pathname === path ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20'
+  const isActive = (path) => {
+    // Exact match for dashboard
+    if (path === '/dashboard' && pathname === path) return 'bg-white text-[var(--ona-primary)]'
+    
+    // Nested route match for departements
+    if (path === '/departements' && pathname.startsWith('/departements')) {
+      return 'bg-white text-[var(--ona-primary)]'
+    }
+    
+    // Exact match for other routes
+    return pathname === path ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20'
+  }
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -153,10 +164,11 @@ export default function Navbar () {
             </span>
             <button 
               onClick={() => signOut({ callbackUrl: '/login' })}
-              className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center space-x-2"
+              className="px-3 py-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex items-center justify-center"
+              aria-label="Déconnexion"
+              title="Déconnexion"
             >
-              <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
-              <span>Déconnexion</span>
+              <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
             </button>
           </div>
         </div>
@@ -188,10 +200,11 @@ export default function Navbar () {
               <div className="pt-4 mt-4 border-t border-white/20">
                 <button 
                   onClick={() => signOut({ callbackUrl: '/login' })}
-                  className="w-full px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center space-x-2"
+                  className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center justify-center"
+                  aria-label="Déconnexion"
+                  title="Déconnexion"
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
-                  <span>Déconnexion</span>
+                  <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
                 </button>
               </div>
             </div>
