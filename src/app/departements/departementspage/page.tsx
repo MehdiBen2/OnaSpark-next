@@ -12,6 +12,7 @@ import {
   Clock,
   Beaker
 } from 'lucide-react'
+import Image from 'next/image'
 
 // Define a type for the color configuration
 type ColorConfig = {
@@ -23,41 +24,41 @@ type ColorConfig = {
 
 // Color configuration for each section
 const COLOR_CONFIGS: Record<string, ColorConfig> = {
-  exploitation: {
+  moyensgeneraux: {
     bgColor: 'bg-emerald-50',
     textColor: 'text-emerald-600',
     gradientFrom: 'from-emerald-500',
     gradientTo: 'to-emerald-600'
   },
-  ressourceshumaines: {
+  exploitation: {
     bgColor: 'bg-sky-50',
     textColor: 'text-sky-600',
     gradientFrom: 'from-sky-500',
     gradientTo: 'to-sky-600'
   },
-  finance: {
+  reuse: {
     bgColor: 'bg-amber-50',
     textColor: 'text-amber-600',
     gradientFrom: 'from-amber-500',
     gradientTo: 'to-amber-600'
   },
-  securite: {
-    bgColor: 'bg-rose-50',
-    textColor: 'text-rose-600',
-    gradientFrom: 'from-rose-500',
-    gradientTo: 'to-rose-600'
+  finance: {
+    bgColor: 'bg-violet-50',
+    textColor: 'text-violet-600',
+    gradientFrom: 'from-violet-500',
+    gradientTo: 'to-violet-600'
   },
-  strategieetperformance: {
+  drh: {
     bgColor: 'bg-indigo-50',
     textColor: 'text-indigo-600',
     gradientFrom: 'from-indigo-500',
     gradientTo: 'to-indigo-600'
   },
-  rechercheEtInnovation: {
-    bgColor: 'bg-purple-50',
-    textColor: 'text-purple-600',
-    gradientFrom: 'from-purple-500',
-    gradientTo: 'to-purple-600'
+  hse: {
+    bgColor: 'bg-rose-50',
+    textColor: 'text-rose-600',
+    gradientFrom: 'from-rose-500',
+    gradientTo: 'to-rose-600'
   }
 }
 
@@ -67,6 +68,7 @@ type DepartementCardProps = {
   icon: any
   subItems: Array<{ value: string }>
   href: string
+  color: string
 }
 
 function DepartementCard({ 
@@ -74,14 +76,17 @@ function DepartementCard({
   description, 
   icon: Icon, 
   subItems, 
-  href 
+  href,
+  color
 }: DepartementCardProps) {
-  // Determine color configuration based on title
-  const colorKey = title.toLowerCase()
-    .replace(/\s+/g, '')
-    .replace("'", '') as keyof typeof COLOR_CONFIGS
+  // More robust color extraction
+  const extractColor = (prefix: string) => {
+    const match = color.match(new RegExp(`${prefix}-(\\w+)-\\d+`))
+    return match ? match[1] : 'primary'
+  }
 
-  const colorConfig = COLOR_CONFIGS[colorKey] || COLOR_CONFIGS.exploitation
+  const fromColor = extractColor('from')
+  const toColor = extractColor('to')
 
   return (
     <Link 
@@ -89,44 +94,68 @@ function DepartementCard({
       className="group relative block transform transition-all duration-300 hover:-translate-y-2"
       aria-label={`Voir les détails du département ${title}`}
     >
-      <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorConfig.gradientFrom} ${colorConfig.gradientTo} rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-300 blur-sm`}></div>
-      
-      <div className="relative bg-white p-6 rounded-2xl shadow-xl ring-1 ring-gray-900/5 space-y-5">
-        <div className="flex items-center justify-between">
-          <div className={`p-3 rounded-xl ${colorConfig.bgColor} ${colorConfig.textColor} bg-opacity-10`}>
-            <Icon 
-              size={28} 
-              className={`${colorConfig.textColor} opacity-80`} 
-            />
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <span className="text-xs font-medium text-gray-500">
-              {subItems[0].value}
-            </span>
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          </div>
-        </div>
-        
-        <div className="space-y-3">
-          <h3 className={`text-xl font-bold text-gray-900 group-hover:${colorConfig.textColor} transition-colors`}>
-            {title}
-          </h3>
-          
-          <p className="text-sm text-gray-600 line-clamp-2">
-            {description}
-          </p>
-        </div>
-        
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="flex items-center space-x-2">
-            <Clock className="w-4 h-4 text-gray-400" />
-            <span className="text-xs text-gray-500">Mis à jour récemment</span>
-          </div>
-          
-          <div className={`flex items-center ${colorConfig.textColor} font-semibold text-sm group-hover:opacity-80 transition-colors`}>
-            Explorer
-            <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      <div className="relative w-full h-full">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-2xl group-hover:border-gray-200">
+          <div className="p-6 space-y-5">
+            {/* Header with Icon and Status */}
+            <div className="flex items-center justify-between">
+              <div 
+                className={`p-3 rounded-xl bg-opacity-10 transition-all duration-300 group-hover:bg-opacity-20`}
+                style={{ 
+                  backgroundColor: `rgba(var(--${fromColor}-500-rgb), 0.1)`, 
+                  color: `rgb(var(--${fromColor}-500-rgb))`
+                }}
+              >
+                <Icon 
+                  size={28} 
+                  className="opacity-80 group-hover:opacity-100 transition-opacity"
+                  style={{ 
+                    color: `rgb(var(--${fromColor}-500-rgb))`
+                  }}
+                />
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-500">
+                  {subItems[0].value}
+                </span>
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-gray-900 group-hover:text-black transition-colors">
+                {title}
+              </h3>
+              
+              <p className="text-sm text-gray-600 line-clamp-2 min-h-[48px]">
+                {description}
+              </p>
+            </div>
+
+            {/* Footer */}
+            <div 
+              className={`flex items-center justify-between pt-4 border-t border-gray-100 relative overflow-hidden`}
+            >
+              <div className="flex items-center space-x-2 text-gray-500">
+                <Clock className="w-4 h-4" />
+                <span className="text-xs">Mis à jour récemment</span>
+              </div>
+              
+              <div className="flex items-center text-sm font-medium text-gray-800 group-hover:text-black transition-colors">
+                Explorer
+                <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+
+              {/* Colorful Footer Accent */}
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-1 opacity-50 group-hover:opacity-100 transition-opacity"
+                style={{ 
+                  background: `linear-gradient(to right, rgb(var(--${fromColor}-500-rgb)), rgb(var(--${toColor}-600-rgb)))` 
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -135,56 +164,63 @@ function DepartementCard({
 }
 
 function DepartementBanner() {
+  const currentDate = new Date().toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-[#4a90e2] to-[#1a237e] py-20 text-white">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_24%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_26%,transparent_27%,transparent_74%,rgba(255,255,255,0.05)_75%,rgba(255,255,255,0.05)_76%,transparent_77%,transparent)] bg-[length:4rem_4rem]"></div>
-      </div>
-
+    <div className="relative bg-gradient-to-br from-[#4a90e2] to-[#1a237e] text-white overflow-hidden shadow-2xl">
       {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-white/10"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        />
-        <motion.div
-          className="absolute -bottom-20 -left-20 h-96 w-96 rounded-full bg-white/10"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.1, 0.2],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        />
+      <div className="absolute inset-0 opacity-20 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full animate-pulse"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full animate-pulse animation-delay-2000"></div>
+      </div>
+      
+      {/* Subtle Grid Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-10"></div>
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(0deg,transparent_24%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_26%,transparent_27%,transparent_74%,rgba(255,255,255,0.05)_75%,rgba(255,255,255,0.05)_76%,transparent_77%,transparent)] bg-[length:4rem_4rem]"></div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
-          <h1 className="mb-4 text-5xl font-black tracking-tight">
-            DEPARTEMENTS ONA
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-white/80">
-            Découvrez nos différents départements et leurs responsabilités au sein de l'Office National de l'Assainissement
-          </p>
-        </motion.div>
+      <div className="relative px-4 py-16 md:px-8 md:py-20 max-w-7xl mx-auto flex items-center justify-between min-h-[350px]">
+        <div className="flex-1 text-center md:text-left relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 drop-shadow-lg">
+              DEPARTEMENTS ONA
+            </h2>
+            
+            <div className="flex items-center justify-center md:justify-start space-x-4 text-white/80">
+              <Clock className="w-6 h-6 opacity-70" />
+              <p className="text-xl font-black tracking-wide">
+                {currentDate}
+              </p>
+            </div>
+            
+            <div className="mt-4 flex items-center justify-center md:justify-start space-x-3">
+              <FileText className="w-6 h-6 opacity-70" />
+              <span className="text-lg font-black text-white/90">
+                Gestion intégrée des services et opérations
+              </span>
+            </div>
+          </motion.div>
+        </div>
+        
+        <div className="hidden md:block -mr-16">
+          <Image 
+            src="/images/onalogos/sparkLogofull.png" 
+            alt="ONA Spark Logo" 
+            width={350} 
+            height={120} 
+            className="max-w-[350px] opacity-90"
+          />
+        </div>
       </div>
     </div>
   )
@@ -193,51 +229,57 @@ function DepartementBanner() {
 export default function DepartementsPage() {
   const departementSections = [
     {
-      title: 'Exploitation',
-      description: 'Gestion opérationnelle et maintenance des infrastructures',
+      title: 'Moyens Généraux',
+      description: 'Gestion des ressources matérielles et logistiques de l\'organisation',
       icon: Wrench,
-      subItems: [{ value: '5 projets actifs' }],
+      color: 'from-emerald-500 to-emerald-600',
+      subItems: [{ value: 'Infrastructure • Transport • Stock' }],
+      href: '/departements/moyens-generaux'
+    },
+    {
+      title: 'Exploitation et Maintenance',
+      description: 'Supervision des opérations et maintenance des installations',
+      icon: FileText,
+      color: 'from-indigo-500 to-indigo-600',
+      subItems: [{ value: 'Rapports • Maintenance • Performance' }],
       href: '/departements/exploitation'
     },
     {
-      title: 'Ressources Humaines',
-      description: 'Développement et gestion du capital humain',
-      icon: Users,
-      subItems: [{ value: '120 employés' }],
-      href: '/departements/ressources-humaines'
+      title: 'REUSE',
+      description: 'Réutilisation et valorisation des eaux épurées',
+      icon: Beaker,
+      color: 'from-amber-500 to-amber-600',
+      subItems: [{ value: 'Réglementations • Qualité • Info' }],
+      href: '/departements/reuse'
     },
     {
       title: 'Finance',
-      description: 'Gestion financière et optimisation budgétaire',
+      description: 'Gestion financière, budgétaire et optimisation des ressources',
       icon: BarChart2,
-      subItems: [{ value: '4 rapports financiers' }],
+      color: 'from-sky-500 to-sky-600',
+      subItems: [{ value: 'Comptabilité • Budget • Factures' }],
       href: '/departements/finance'
     },
     {
-      title: 'Sécurité',
-      description: 'Protection et prévention des risques opérationnels',
+      title: 'DRH',
+      description: 'Gestion des ressources humaines et développement du personnel',
+      icon: Users,
+      color: 'from-rose-500 to-rose-600',
+      subItems: [{ value: 'Personnel • Formation • Évaluation' }],
+      href: '/departements/drh'
+    },
+    {
+      title: 'HSE',
+      description: 'Hygiène, Sécurité et Environnement pour un milieu de travail sûr',
       icon: Shield,
-      subItems: [{ value: '3 alertes de sécurité' }],
-      href: '/departements/securite'
-    },
-    {
-      title: 'Stratégie et Performance',
-      description: 'Analyse stratégique et amélioration continue',
-      icon: FileText,
-      subItems: [{ value: '2 initiatives stratégiques' }],
-      href: '/departements/strategie-performance'
-    },
-    {
-      title: 'Recherche et Innovation',
-      description: 'Développement de solutions technologiques avancées pour l\'assainissement',
-      icon: Beaker,
-      subItems: [{ value: '7 projets de recherche' }],
-      href: '/departements/recherche-innovation'
+      color: 'from-violet-500 to-violet-600',
+      subItems: [{ value: 'Sécurité • Environnement • Santé' }],
+      href: '/departements/hse'
     }
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <DepartementBanner />
       
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

@@ -6,11 +6,42 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-roboto: 'Roboto', sans-serif;
-  --ona-primary: #356ee7;     /* Modern bright blue */
-  --ona-secondary: #173aaa;    /* Deep blue */
-  --ona-accent: #95C11F;       /* ONA Green */
+  
+  /* Primary Colors with RGB Variants */
+  --ona-primary: #356ee7;
+  --ona-primary-rgb: 53, 110, 231;
+  
+  --ona-secondary: #173aaa;
+  --ona-secondary-rgb: 23, 58, 170;
+  
+  --ona-accent: #95C11F;
+  --ona-accent-rgb: 149, 193, 31;
+  
   --ona-dark: #2b2d42;
+  --ona-dark-rgb: 43, 45, 66;
+  
   --ona-light: #f8f9fa;
+  --ona-light-rgb: 248, 249, 250;
+
+  /* Tailwind Color RGB Variants */
+  --emerald-500-rgb: 16, 185, 129;
+  --emerald-600-rgb: 5, 150, 105;
+  
+  --indigo-500-rgb: 99, 102, 241;
+  --indigo-600-rgb: 79, 70, 229;
+  
+  --amber-500-rgb: 245, 158, 11;
+  --amber-600-rgb: 217, 119, 6;
+  
+  --sky-500-rgb: 14, 165, 233;
+  --sky-600-rgb: 2, 132, 199;
+  
+  --rose-500-rgb: 244, 63, 94;
+  --rose-600-rgb: 225, 29, 72;
+  
+  --violet-500-rgb: 139, 92, 246;
+  --violet-600-rgb: 124, 58, 237;
+
   --transition: all 0.3s ease-in-out;
 }
 
