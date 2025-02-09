@@ -8,98 +8,106 @@ import {
 } from 'lucide-react'
 
 export const ROUTES = {
+  landing: '/',
   dashboard: '/dashboard',
   departements: '/departements',
-  departementExploitation: '/departement/exploitation',
-  departement: {
-    root: '/departement',
-    list: '/departement/departementpage',
+  departementExploitation: '/departements/exploitation',
+  departementExploitationRapports: '/departements/exploitation/rapports',
+  departementExploitationMaintenance: '/departements/exploitation/maintenance',
+  departementRessourcesHumaines: '/departements/ressources-humaines',
+  departementFinance: '/departements/finance',
+  departementSecurite: '/departements/securite',
+  departementStrategiePerformance: '/departements/strategie-performance',
+  departementRechercheInnovation: '/departements/recherche-innovation',
+  departements: {
+    root: '/departements',
+    list: '/departements/departementspage',
     moyensGeneraux: {
-      root: '/departement/moyens-generaux',
-      path: '/departement/moyens-generaux',
+      root: '/departements/moyens-generaux',
+      path: '/departements/moyens-generaux',
       icon: Building2,
       title: 'Moyens Généraux',
       description: 'Gestion des ressources matérielles et logistiques',
       subRoutes: [
-        { name: 'Infrastructure', path: '/departement/moyens-generaux/infrastructure' },
-        { name: 'Transport', path: '/departement/moyens-generaux/transport' },
-        { name: 'Stock', path: '/departement/moyens-generaux/stock' }
+        { name: 'Infrastructure', path: '/departements/moyens-generaux/infrastructure' },
+        { name: 'Transport', path: '/departements/moyens-generaux/transport' },
+        { name: 'Stock', path: '/departements/moyens-generaux/stock' }
       ]
     },
     exploitation: {
-      root: '/departement/exploitation',
-      path: '/departement/exploitation',
+      root: '/departements/exploitation',
+      path: '/departements/exploitation',
       icon: Wrench,
       title: 'Exploitation et Maintenance',
       description: 'Supervision des opérations et maintenance',
       subRoutes: [
-        { name: 'Rapports', path: '/departement/exploitation/rapports' },
-        { name: 'Maintenance', path: '/departement/exploitation/maintenance' },
-        { name: 'Surveillance', path: '/departement/exploitation/surveillance' },
-        { name: 'Performance', path: '/departement/exploitation/performance' }
+        { name: 'Rapports', path: '/departements/exploitation/rapports' },
+        { name: 'Maintenance', path: '/departements/exploitation/maintenance' },
+        { name: 'Surveillance', path: '/departements/exploitation/surveillance' },
+        { name: 'Performance', path: '/departements/exploitation/performance' }
       ]
     },
     reuse: {
-      root: '/departement/reuse',
-      path: '/departement/reuse',
+      root: '/departements/reuse',
+      path: '/departements/reuse',
       icon: Recycle,
       title: 'REUSE',
       description: 'Réutilisation de l\'eau après épuration',
       subRoutes: [
-        { name: 'Réglementations', path: '/departement/reuse/reglementations' },
-        { name: 'Qualité de l\'eau', path: '/departement/reuse/qualite-eau' },
-        { name: 'Informations', path: '/departement/reuse/informations' }
+        { name: 'Réglementations', path: '/departements/reuse/reglementations' },
+        { name: 'Qualité de l\'eau', path: '/departements/reuse/qualite-eau' },
+        { name: 'Informations', path: '/departements/reuse/informations' }
       ]
     },
     finance: {
-      root: '/departement/finance',
-      path: '/departement/finance',
+      root: '/departements/finance',
+      path: '/departements/finance',
       icon: Wallet,
       title: 'Finance',
       description: 'Gestion financière et comptable',
       subRoutes: [
-        { name: 'Comptabilité', path: '/departement/finance/comptabilite' },
-        { name: 'Budget', path: '/departement/finance/budget' },
-        { name: 'Factures', path: '/departement/finance/factures' }
+        { name: 'Comptabilité', path: '/departements/finance/comptabilite' },
+        { name: 'Budget', path: '/departements/finance/budget' },
+        { name: 'Factures', path: '/departements/finance/factures' }
       ]
     },
     drh: {
-      root: '/departement/drh',
-      path: '/departement/drh',
+      root: '/departements/drh',
+      path: '/departements/drh',
       icon: Users,
       title: 'DRH',
       description: 'Gestion des ressources humaines',
       subRoutes: [
-        { name: 'Personnel', path: '/departement/drh/personnel' },
-        { name: 'Formation', path: '/departement/drh/formation' },
-        { name: 'Évaluation', path: '/departement/drh/evaluation' }
+        { name: 'Personnel', path: '/departements/drh/personnel' },
+        { name: 'Formation', path: '/departements/drh/formation' },
+        { name: 'Évaluation', path: '/departements/drh/evaluation' }
       ]
     },
     hse: {
-      root: '/departement/hse',
-      path: '/departement/hse',
+      root: '/departements/hse',
+      path: '/departements/hse',
       icon: Shield,
       title: 'HSE',
       description: 'Hygiène, Sécurité et Environnement',
       subRoutes: [
-        { name: 'Sécurité', path: '/departement/hse/securite' },
-        { name: 'Environnement', path: '/departement/hse/environnement' },
-        { name: 'Santé', path: '/departement/hse/sante' }
+        { name: 'Sécurité', path: '/departements/hse/securite' },
+        { name: 'Environnement', path: '/departements/hse/environnement' },
+        { name: 'Santé', path: '/departements/hse/sante' }
       ]
     },
     departementExploitationRapports: {
-      root: '/departement/exploitation/rapports',
+      root: '/departements/exploitation/rapports',
       subRoutes: [
-        { name: 'Incidents', path: '/departement/exploitation/rapports/incidents' },
-        { name: 'Rapports Journaliers', path: '/departement/exploitation/rapports/journaliers' },
-        { name: 'Rapports Mensuels', path: '/departement/exploitation/rapports/mensuels' },
-        { name: 'Statistiques', path: '/departement/exploitation/rapports/statistiques' },
-        { name: 'KPIs', path: '/departement/exploitation/rapports/kpis' }
+        { name: 'Incidents', path: '/departements/exploitation/rapports/incidents' },
+        { name: 'Rapports Journaliers', path: '/departements/exploitation/rapports/journaliers' },
+        { name: 'Rapports Mensuels', path: '/departements/exploitation/rapports/mensuels' },
+        { name: 'Statistiques', path: '/departements/exploitation/rapports/statistiques' },
+        { name: 'KPIs', path: '/departements/exploitation/rapports/kpis' }
       ]
     }
   }
 }
 
-export const getRouteConfig = (route: keyof typeof ROUTES.departement) => {
-  return ROUTES.departement[route]
+export const getRouteConfig = (route: keyof typeof ROUTES.departements) => {
+  return ROUTES.departements[route]
 }

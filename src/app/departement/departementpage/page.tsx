@@ -1,140 +1,125 @@
-'use client'
-
-import React from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { 
-  Building2, 
+  FileText, 
   Wrench, 
-  Recycle, 
-  ScrollText, 
-  Wallet, 
   Users, 
-  Shield,
-  Truck,
-  Package,
-  LineChart,
-  FileText,
-  Droplets,
-  Scale,
-  Info,
-  Calculator,
-  Receipt,
-  GraduationCap,
-  ClipboardCheck,
-  HeartPulse,
-  Leaf
+  BarChart2, 
+  Shield, 
+  ArrowRight, 
+  Clock,
+  Beaker
 } from 'lucide-react'
-import Link from 'next/link'
 
-const departements = [
-  {
-    title: 'Moyens Généraux',
-    description: 'Gestion des ressources matérielles et logistiques de l\'organisation',
-    icon: Building2,
-    color: 'from-blue-500 to-blue-600',
-    subItems: [
-      { name: 'Infrastructure', icon: Building2 },
-      { name: 'Transport', icon: Truck },
-      { name: 'Stock', icon: Package }
-    ],
-    href: '/departement/moyens-generaux'
+// Define a type for the color configuration
+type ColorConfig = {
+  bgColor: string
+  textColor: string
+  gradientFrom: string
+  gradientTo: string
+}
+
+// Color configuration for each section
+const COLOR_CONFIGS: Record<string, ColorConfig> = {
+  exploitation: {
+    bgColor: 'bg-emerald-50',
+    textColor: 'text-emerald-600',
+    gradientFrom: 'from-emerald-500',
+    gradientTo: 'to-emerald-600'
   },
-  {
-    title: 'Exploitation et Maintenance',
-    description: 'Supervision des opérations et maintenance des installations',
-    icon: Wrench,
-    color: 'from-green-500 to-green-600',
-    subItems: [
-      { name: 'Rapports', icon: FileText },
-      { name: 'Maintenance', icon: Wrench },
-      { name: 'Performance', icon: LineChart }
-    ],
-    href: '/departement/exploitation'
+  ressourceshumaines: {
+    bgColor: 'bg-sky-50',
+    textColor: 'text-sky-600',
+    gradientFrom: 'from-sky-500',
+    gradientTo: 'to-sky-600'
   },
-  {
-    title: 'REUSE',
-    description: 'Réutilisation de l\'eau après épuration',
-    icon: Recycle,
-    color: 'from-teal-500 to-teal-600',
-    subItems: [
-      { name: 'Réglementations', icon: Scale },
-      { name: 'Qualité de l\'eau', icon: Droplets },
-      { name: 'Informations', icon: Info }
-    ],
-    href: '/departement/reuse'
+  finance: {
+    bgColor: 'bg-amber-50',
+    textColor: 'text-amber-600',
+    gradientFrom: 'from-amber-500',
+    gradientTo: 'to-amber-600'
   },
-  {
-    title: 'Finance',
-    description: 'Gestion financière et comptable de l\'organisation',
-    icon: Wallet,
-    color: 'from-purple-500 to-purple-600',
-    subItems: [
-      { name: 'Comptabilité', icon: Calculator },
-      { name: 'Budget', icon: Wallet },
-      { name: 'Factures', icon: Receipt }
-    ],
-    href: '/departement/finance'
+  securite: {
+    bgColor: 'bg-rose-50',
+    textColor: 'text-rose-600',
+    gradientFrom: 'from-rose-500',
+    gradientTo: 'to-rose-600'
   },
-  {
-    title: 'DRH',
-    description: 'Gestion des ressources humaines et développement du personnel',
-    icon: Users,
-    color: 'from-orange-500 to-orange-600',
-    subItems: [
-      { name: 'Personnel', icon: Users },
-      { name: 'Formation', icon: GraduationCap },
-      { name: 'Évaluation', icon: ClipboardCheck }
-    ],
-    href: '/departement/drh'
+  strategieetperformance: {
+    bgColor: 'bg-indigo-50',
+    textColor: 'text-indigo-600',
+    gradientFrom: 'from-indigo-500',
+    gradientTo: 'to-indigo-600'
   },
-  {
-    title: 'HSE',
-    description: 'Hygiène, Sécurité et Environnement pour un milieu de travail sûr',
-    icon: Shield,
-    color: 'from-red-500 to-red-600',
-    subItems: [
-      { name: 'Sécurité', icon: Shield },
-      { name: 'Environnement', icon: Leaf },
-      { name: 'Santé', icon: HeartPulse }
-    ],
-    href: '/departement/hse'
+  rechercheEtInnovation: {
+    bgColor: 'bg-purple-50',
+    textColor: 'text-purple-600',
+    gradientFrom: 'from-purple-500',
+    gradientTo: 'to-purple-600'
   }
-]
+}
 
-const DepartementCard = ({ title, description, icon: Icon, color, subItems, href }) => {
+const DepartementCard = ({ 
+  title, 
+  description, 
+  icon: Icon, 
+  subItems, 
+  href 
+}) => {
+  // Determine color configuration based on title
+  const colorKey = title.toLowerCase()
+    .replace(/\s+/g, '')
+    .replace("'", '') as keyof typeof COLOR_CONFIGS
+
+  const colorConfig = COLOR_CONFIGS[colorKey] || COLOR_CONFIGS.exploitation
+
   return (
-    <Link href={href}>
-      <motion.div 
-        className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${color} p-6 text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
-        whileHover={{ y: -5 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="absolute right-0 top-0 opacity-10">
-          <Icon size={120} />
-        </div>
-        <div className="relative z-10">
-          <div className="mb-4 inline-block rounded-lg bg-white/20 p-3 backdrop-blur-sm">
-            <Icon size={24} />
+    <Link 
+      href={href} 
+      className="group relative block transform transition-all duration-300 hover:-translate-y-2"
+      aria-label={`Voir les détails du département ${title}`}
+    >
+      <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorConfig.gradientFrom} ${colorConfig.gradientTo} rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-300 blur-sm`}></div>
+      
+      <div className="relative bg-white p-6 rounded-2xl shadow-xl ring-1 ring-gray-900/5 space-y-5">
+        <div className="flex items-center justify-between">
+          <div className={`p-3 rounded-xl ${colorConfig.bgColor} ${colorConfig.textColor} bg-opacity-10`}>
+            <Icon 
+              size={28} 
+              className={`${colorConfig.textColor} opacity-80`} 
+            />
           </div>
-          <h3 className="mb-2 text-xl font-bold">{title}</h3>
-          <p className="mb-4 text-sm text-white/80">{description}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {subItems.map((item, index) => {
-              const ItemIcon = item.icon
-              return (
-                <div 
-                  key={index}
-                  className="flex items-center space-x-2 rounded-lg bg-white/10 px-3 py-2 text-sm backdrop-blur-sm"
-                >
-                  <ItemIcon size={16} />
-                  <span>{item.name}</span>
-                </div>
-              )
-            })}
+          
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-medium text-gray-500">
+              {subItems[0].value}
+            </span>
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
           </div>
         </div>
-      </motion.div>
+        
+        <div className="space-y-3">
+          <h3 className={`text-xl font-bold text-gray-900 group-hover:${colorConfig.textColor} transition-colors`}>
+            {title}
+          </h3>
+          
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {description}
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="flex items-center space-x-2">
+            <Clock className="w-4 h-4 text-gray-400" />
+            <span className="text-xs text-gray-500">Mis à jour récemment</span>
+          </div>
+          
+          <div className={`flex items-center ${colorConfig.textColor} font-semibold text-sm group-hover:opacity-80 transition-colors`}>
+            Explorer
+            <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+      </div>
     </Link>
   )
 }
@@ -196,20 +181,69 @@ const DepartementBanner = () => {
 }
 
 export default function DepartementsPage() {
+  const departementSections = [
+    {
+      title: 'Exploitation',
+      description: 'Gestion opérationnelle et maintenance des infrastructures',
+      icon: Wrench,
+      subItems: [{ value: '5 projets actifs' }],
+      href: '/departement/exploitation'
+    },
+    {
+      title: 'Ressources Humaines',
+      description: 'Développement et gestion du capital humain',
+      icon: Users,
+      subItems: [{ value: '120 employés' }],
+      href: '/departement/ressources-humaines'
+    },
+    {
+      title: 'Finance',
+      description: 'Gestion financière et optimisation budgétaire',
+      icon: BarChart2,
+      subItems: [{ value: '4 rapports financiers' }],
+      href: '/departement/finance'
+    },
+    {
+      title: 'Sécurité',
+      description: 'Protection et prévention des risques opérationnels',
+      icon: Shield,
+      subItems: [{ value: '3 alertes de sécurité' }],
+      href: '/departement/securite'
+    },
+    {
+      title: 'Stratégie et Performance',
+      description: 'Analyse stratégique et amélioration continue',
+      icon: FileText,
+      subItems: [{ value: '2 initiatives stratégiques' }],
+      href: '/departement/strategie-performance'
+    },
+    {
+      title: 'Recherche et Innovation',
+      description: 'Développement de solutions technologiques avancées pour l\'assainissement',
+      icon: Beaker,
+      subItems: [{ value: '7 projets de recherche' }],
+      href: '/departement/recherche-innovation'
+    }
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <DepartementBanner />
       
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {departements.map((dept, index) => (
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {departementSections.map((section, index) => (
             <motion.div
-              key={dept.title}
+              key={section.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ 
+                delay: index * 0.1,
+                type: 'spring',
+                stiffness: 100
+              }}
             >
-              <DepartementCard {...dept} />
+              <DepartementCard {...section} />
             </motion.div>
           ))}
         </div>
