@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter, useSearchParams, router } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { z } from 'zod'
 import Link from 'next/link'
 
@@ -15,10 +15,18 @@ const LoginSchema = z.object({
 type LoginFormData = z.infer<typeof LoginSchema>
 
 export default function LoginPage() {
+  const { data: session } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   
+  // Redirect to dashboard if already authenticated
+  useEffect(() => {
+    if (session) {
+      router.replace('/dashboard')
+    }
+  }, [session, router])
+
   const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: ''
