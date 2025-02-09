@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 export const metadata: Metadata = {
   title: 'ONA Spark',
@@ -29,18 +30,9 @@ export default async function RootLayout({
     >
       <body className="min-h-screen bg-gray-50">
         <SessionProvider session={session}>
-          {session ? (
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-grow">
-                {children}
-              </main>
-            </div>
-          ) : (
-            <main className="flex-grow">
-              {children}
-            </main>
-          )}
+          <ClientLayoutWrapper session={session}>
+            {children}
+          </ClientLayoutWrapper>
         </SessionProvider>
       </body>
     </html>
