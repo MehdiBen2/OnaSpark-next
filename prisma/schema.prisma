@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Enum for different user roles
+// Comprehensive User Roles
 enum UserRole {
   ADMIN
   DG_EMPLOYEE
@@ -16,110 +16,154 @@ enum UserRole {
   STANDARD_USER
 }
 
-// Enum for account status
-enum AccountStatus {
-  ACTIVE
-  INACTIVE
-  SUSPENDED
-  PENDING
-}
-
-// Department model to represent organizational departments
+// Department Model
 model Department {
   id            String    @id @default(cuid())
-  name          String
+  name          String    @unique
+  code          String    @unique
   description   String?
   users         User[]
+  incidents     IncidentPhysique[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
-// Zone model representing different geographical or administrative zones
+// Zone Model
 model Zone {
   id            String    @id @default(cuid())
-  name          String
+  name          String    @unique
   code          String    @unique
   description   String?
   units         Unit[]
   users         User[]
+  centres       Centre[]
+  incidents     IncidentPhysique[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
-// Unit model representing specific units within a zone
+// Unit Model
 model Unit {
   id            String    @id @default(cuid())
-  name          String
+  name          String    @unique
   code          String    @unique
   description   String?
   zoneId        String
   zone          Zone      @relation(fields: [zoneId], references: [id])
+  centres       Centre[]
   users         User[]
+  incidents     IncidentPhysique[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
-// User model with comprehensive role and permission management
-model User {
-  id            String        @id @default(cuid())
-  email         String        @unique
-  password      String
-  firstName     String
-  lastName      String
-  role          UserRole
-  status        AccountStatus @default(ACTIVE)
-  
-  // Department association (optional)
-  departmentId  String?
-  department    Department?   @relation(fields: [departmentId], references: [id])
-  
-  // Zone and Unit associations based on role
-  zoneId        String?
-  zone          Zone?         @relation(fields: [zoneId], references: [id])
-  
-  unitId        String?
-  unit          Unit?         @relation(fields: [unitId], references: [id])
-  
-  // Additional user metadata
-  lastLogin     DateTime?
-  profileImage  String?
-  
-  // Audit fields
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  
-  // Relation to user sessions or tokens if needed
-  sessions      Session[]
-}
-
-// Session model for managing user sessions
-model Session {
-  id            String    @id @default(cuid())
-  userId        String
-  user          User      @relation(fields: [userId], references: [id])
-  token         String    @unique
-  expiresAt     DateTime
-  createdAt     DateTime  @default(now())
-}
-
-// Permissions model for fine-grained access control
-model Permission {
+// Centre Model
+model Centre {
   id            String    @id @default(cuid())
   name          String    @unique
+  code          String    @unique
   description   String?
-  category      String
-  
-  // You can expand this to create role-based or user-specific permissions
+  zoneId        String
+  zone          Zone      @relation(fields: [zoneId], references: [id])
+  unitId        String
+  unit          Unit      @relation(fields: [unitId], references: [id])
+  incidents     IncidentPhysique[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
-// Logging model for tracking user activities
-model AuditLog {
+// Users Table with Comprehensive Access Control
+model User {
   id            String    @id @default(cuid())
-  userId        String
-  action        String
-  description   String
-  ipAddress     String?
-  timestamp     DateTime  @default(now())
+  
+  // Identification
+  username      String    @unique
+  displayName   String
+  passwordHash  String
+  
+  // Role and Access Control
+  role          UserRole
+  
+  // Department Association
+  departmentId  String?
+  department    Department?  @relation(fields: [departmentId], references: [id])
+  
+  // Zone and Unit Access Control
+  zoneId        String?
+  zone          Zone?        @relation(fields: [zoneId], references: [id])
+  
+  unitId        String?
+  unit          Unit?        @relation(fields: [unitId], references: [id])
+  
+  // User Management
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  
+  // Audit Trails
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relationships
+  incidents     IncidentPhysique[]
+}
+
+// Incidents Physique Table
+model IncidentPhysique {
+  id              String    @id @default(cuid())
+  
+  title           String
+  wilaya          String
+  commune         String
+  localite        String?
+  latitude        Float?
+  longitude       Float?
+  
+  natureCause     String
+  structureType   String?
+  stepType        String
+  
+  dateIncident    DateTime
+  dateResolution  DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  status          IncidentStatus  @default(PENDING)
+  gravite         IncidentGravity
+  impact          String?
+  isValid         Boolean         @default(false)
+  
+  mesuresPrises   String?
+  resolutionNotes String?
+  
+  drawnShapes     String?
+  
+  user            User?     @relation(fields: [userId], references: [id])
+  userId          String?
+  
+  unit            Unit?     @relation(fields: [unitId], references: [id])
+  unitId          String?
+  
+  zone            Zone?     @relation(fields: [zoneId], references: [id])
+  zoneId          String?
+  
+  department      Department? @relation(fields: [departmentId], references: [id])
+  departmentId    String?
+  
+  centre          Centre?    @relation(fields: [centreId], references: [id])
+  centreId        String?
+}
+
+// Existing Enums
+enum IncidentStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  CANCELLED
+}
+
+enum IncidentGravity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }

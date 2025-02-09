@@ -12,6 +12,9 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
@@ -22,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@heroicons/react": "^2.1.1",
+    "@types/bcryptjs": "^2.4.6",
     "apexcharts": "^4.4.0",
     "bcryptjs": "^2.4.3",
     "date-fns": "^4.1.0",
@@ -56,8 +60,5 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.3.3"
-  },
-  "prisma": {
-    "seed": "npx tsx prisma/seed.ts"
   }
 }

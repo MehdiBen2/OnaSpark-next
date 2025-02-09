@@ -1,80 +1,64 @@
 import { PrismaClient } from '@prisma/client'
-import { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  // Create initial departments
-  const adminDepartment = await prisma.department.create({
-    data: {
-      name: 'Administration',
-      description: 'Central administrative department'
+  // Create initial Department
+  const adminDepartment = await prisma.department.upsert({
+    where: { code: 'ADMIN_DEPT' },
+    update: {},
+    create: {
+      name: 'Administration Générale',
+      code: 'ADMIN_DEPT',
+      description: 'Département central pour la gestion administrative'
     }
   })
 
-  const waterQualityDepartment = await prisma.department.create({
-    data: {
-      name: 'Water Quality',
-      description: 'Department responsible for water quality monitoring'
+  // Create initial Zone
+  const mainZone = await prisma.zone.upsert({
+    where: { code: 'ZONE_CENTRALE' },
+    update: {},
+    create: {
+      name: 'Zone Centrale',
+      code: 'ZONE_CENTRALE',
+      description: 'Zone administrative principale'
     }
   })
 
-  // Create initial zones
-  const centralZone = await prisma.zone.create({
-    data: {
-      name: 'Central Zone',
-      code: 'ZONE-CENTRAL-001',
-      description: 'Central administrative zone'
+  // Create initial Unit
+  const mainUnit = await prisma.unit.upsert({
+    where: { code: 'UNITE_ADMIN' },
+    update: {},
+    create: {
+      name: 'Unité Administrative Principale',
+      code: 'UNITE_ADMIN',
+      description: 'Unité administrative centrale',
+      zoneId: mainZone.id
     }
   })
 
-  // Create initial units
-  const mainUnit = await prisma.unit.create({
-    data: {
-      name: 'Main Unit',
-      code: 'UNIT-MAIN-001',
-      description: 'Primary operational unit',
-      zoneId: centralZone.id
-    }
-  })
+  // Hash password
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash('ONA_Admin_2024!', salt)
 
-  // Create initial users
-  // Admin user
-  const adminPassword = await hash('AdminPass123!', 12)
-  const adminUser = await prisma.user.create({
-    data: {
-      email: 'admin@onaspark.dz',
-      password: adminPassword,
-      firstName: 'Admin',
-      lastName: 'User',
+  // Create Admin User
+  await prisma.user.upsert({
+    where: { username: 'admin' },
+    update: {},
+    create: {
+      username: 'admin',
+      displayName: 'Administrateur Système',
+      passwordHash: hashedPassword,
       role: 'ADMIN',
-      status: 'ACTIVE',
       departmentId: adminDepartment.id,
-      zoneId: centralZone.id,
-      unitId: mainUnit.id
+      zoneId: mainZone.id,
+      unitId: mainUnit.id,
+      isActive: true
     }
   })
 
-  // DG Employee
-  const dgPassword = await hash('DGPass123!', 12)
-  const dgUser = await prisma.user.create({
-    data: {
-      email: 'dg@onaspark.dz',
-      password: dgPassword,
-      firstName: 'DG',
-      lastName: 'Employee',
-      role: 'DG_EMPLOYEE',
-      status: 'ACTIVE',
-      departmentId: waterQualityDepartment.id
-    }
-  })
-
-  console.log('Seed data created successfully:', {
-    departments: [adminDepartment, waterQualityDepartment],
-    zones: [centralZone],
-    units: [mainUnit],
-    users: [adminUser, dgUser]
-  })
+  console.log('Seed data created successfully')
 }
 
 main()
@@ -85,5 +69,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect()
   })
-
-export {}
