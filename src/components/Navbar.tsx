@@ -1,14 +1,12 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { signOut, useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FontAwesomeIcon 
-} from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { signOut, getSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faChartLine, 
   faBuilding, 
@@ -21,37 +19,52 @@ import {
   faCog,
   faBars,
   faTimes
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 
-export default function Navbar() {
-  const { data: session } = useSession();
-  const pathname = usePathname();
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
+export default function Navbar () {
+  const pathname = usePathname()
+  const [session, setSession] = useState(null)
+  const [isAdminOpen, setIsAdminOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const dropdownRef = useRef(null)
+  const mobileMenuRef = useRef(null)
+
+  // Fetch session on component mount
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const sessionData = await getSession()
+        setSession(sessionData)
+      } catch (error) {
+        console.error('Failed to fetch session', error)
+        setSession(null)
+      }
+    }
+
+    fetchSession()
+  }, [])
 
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsAdminOpen(false);
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsAdminOpen(false)
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
-        setIsMobileMenuOpen(false);
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
-  const isActive = (path: string) => pathname === path ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20';
+  const isActive = (path) => pathname === path ? 'bg-white text-[var(--ona-primary)]' : 'hover:bg-white/20'
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    setIsAdminOpen(false);
-  };
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+    setIsAdminOpen(false)
+  }
 
   const NavLinks = () => (
     <>
@@ -59,36 +72,39 @@ export default function Navbar() {
         href="/dashboard"
         className={`${isActive('/dashboard')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
         onClick={() => {
-          setIsMobileMenuOpen(false);
-          setIsAdminOpen(false);
+          setIsMobileMenuOpen(false)
+          setIsAdminOpen(false)
         }}
       >
         <FontAwesomeIcon icon={faChartLine} className="h-4 w-4" />
         <span>Tableau de bord</span>
       </Link>
+      
       <Link
         href="/departements"
         className={`${isActive('/departements')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
         onClick={() => {
-          setIsMobileMenuOpen(false);
-          setIsAdminOpen(false);
+          setIsMobileMenuOpen(false)
+          setIsAdminOpen(false)
         }}
       >
         <FontAwesomeIcon icon={faBuilding} className="h-4 w-4" />
         <span>Départements</span>
       </Link>
+      
       <Link
         href="/profile"
         className={`${isActive('/profile')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
         onClick={() => {
-          setIsMobileMenuOpen(false);
-          setIsAdminOpen(false);
+          setIsMobileMenuOpen(false)
+          setIsAdminOpen(false)
         }}
       >
         <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
         <span>Mon Profil</span>
       </Link>
-      {session?.user?.role === 'Admin' && (
+      
+      {session?.user?.role === 'ADMIN' && (
         <div className="relative" ref={dropdownRef}>
           <button 
             onClick={() => setIsAdminOpen(!isAdminOpen)}
@@ -118,8 +134,8 @@ export default function Navbar() {
                     href="/admin/users"
                     className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 rounded-lg"
                     onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      setIsAdminOpen(false);
+                      setIsMobileMenuOpen(false)
+                      setIsAdminOpen(false)
                     }}
                   >
                     <FontAwesomeIcon icon={faUsers} className="h-4 w-4" />
@@ -129,8 +145,8 @@ export default function Navbar() {
                     href="/admin/settings"
                     className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 rounded-lg"
                     onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      setIsAdminOpen(false);
+                      setIsMobileMenuOpen(false)
+                      setIsAdminOpen(false)
                     }}
                   >
                     <FontAwesomeIcon icon={faCog} className="h-4 w-4" />
@@ -142,22 +158,23 @@ export default function Navbar() {
           </AnimatePresence>
         </div>
       )}
+      
       <Link
         href="/documentation"
         className={`${isActive('/documentation')} px-5 py-2 rounded-full text-base font-medium transition-all duration-200 flex items-center space-x-2.5`}
         onClick={() => {
-          setIsMobileMenuOpen(false);
-          setIsAdminOpen(false);
+          setIsMobileMenuOpen(false)
+          setIsAdminOpen(false)
         }}
       >
         <FontAwesomeIcon icon={faBook} className="h-4 w-4" />
         <span>Documentation</span>
       </Link>
     </>
-  );
+  )
 
   if (!session) {
-    return null;
+    return null
   }
 
   return (
@@ -197,122 +214,55 @@ export default function Navbar() {
           <div className="flex items-center pl-6 border-l border-white/20">
             <span className="text-sm font-medium mr-4 flex items-center">
               <FontAwesomeIcon icon={faUser} className="h-4 w-4 mr-2" />
-              {session.user.name || session.user.email}
+              {session.user.displayName || session.user.name || session.user.email}
             </span>
-            <motion.button
+            <button 
               onClick={() => signOut({ callbackUrl: '/login' })}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="
-                bg-white/20 
-                hover:bg-white/30 
-                text-white 
-                p-2 
-                rounded-full 
-                transition-all 
-                duration-300 
-                flex 
-                items-center 
-                justify-center
-              "
-              title="Déconnexion"
+              className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center space-x-2"
             >
-              <FontAwesomeIcon 
-                icon={faSignOutAlt} 
-                className="h-5 w-5" 
-              />
-            </motion.button>
+              <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
+              <span>Déconnexion</span>
+            </button>
           </div>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden">
           <button 
-            onClick={() => {
-              setIsMobileMenuOpen(!isMobileMenuOpen);
-              setIsAdminOpen(false);
-            }}
-            className="
-              bg-white/20 
-              hover:bg-white/30 
-              text-white 
-              p-2 
-              rounded-full 
-              transition-all 
-              duration-300 
-              flex 
-              items-center 
-              justify-center
-            "
+            onClick={toggleMobileMenu}
+            className="text-white focus:outline-none"
           >
-            <FontAwesomeIcon 
-              icon={isMobileMenuOpen ? faTimes : faBars} 
-              className="h-5 w-5" 
-            />
+            <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} className="h-6 w-6" />
           </button>
         </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div 
-              ref={mobileMenuRef}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="
-                fixed 
-                top-16 
-                left-0 
-                right-0 
-                bg-white 
-                shadow-lg 
-                z-40 
-                md:hidden
-                text-gray-800
-              "
-            >
-              <div className="flex flex-col space-y-2 p-4">
-                <NavLinks />
-                
-                {/* Mobile User Info and Logout */}
-                <div className="pt-4 mt-4 border-t border-gray-200 flex flex-col space-y-2">
-                  <div className="flex items-center mb-2">
-                    <FontAwesomeIcon icon={faUser} className="h-4 w-4 mr-2 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-800">
-                      {session.user.name || session.user.email}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => {
-                      signOut({ callbackUrl: '/login' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="
-                      bg-[var(--ona-primary)] 
-                      text-white 
-                      px-4 
-                      py-2 
-                      rounded-full 
-                      flex 
-                      items-center 
-                      justify-center 
-                      space-x-2
-                      transition-all 
-                      duration-300
-                      hover:bg-opacity-90
-                    "
-                  >
-                    <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
-                    <span>Déconnexion</span>
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            ref={mobileMenuRef}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden absolute top-16 left-0 right-0 bg-[var(--ona-primary)] shadow-lg"
+          >
+            <div className="px-4 pt-2 pb-4 space-y-2">
+              <NavLinks />
+              <div className="pt-4 mt-4 border-t border-white/20">
+                <button 
+                  onClick={() => signOut({ callbackUrl: '/login' })}
+                  className="w-full px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center space-x-2"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
+                  <span>Déconnexion</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
-  );
+  )
 }

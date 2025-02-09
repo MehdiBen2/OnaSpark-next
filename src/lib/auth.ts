@@ -19,17 +19,23 @@ export const {
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        console.log('Attempting to authorize:', {
+          username: credentials?.username,
+          passwordProvided: !!credentials?.password
+        })
+
+        if (!credentials?.username || !credentials?.password) {
+          console.log('Invalid credentials: Missing username or password')
           throw new Error('Invalid credentials')
         }
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email,
+            username: credentials.username,
           },
           include: {
             department: true,
@@ -38,17 +44,30 @@ export const {
           }
         })
 
-        if (!user || !user.password) {
+        console.log('User lookup result:', {
+          userFound: !!user,
+          username: credentials.username
+        })
+
+        if (!user) {
+          console.log('User not found')
           throw new Error('User not found')
         }
 
-        const isPasswordValid = await compare(credentials.password, user.password)
+        const isPasswordValid = await compare(credentials.password, user.passwordHash)
+
+        console.log('Password validation:', {
+          isPasswordValid,
+          hashedStoredPassword: user.passwordHash
+        })
 
         if (!isPasswordValid) {
+          console.log('Invalid password')
           throw new Error('Invalid password')
         }
 
-        if (user.status !== 'ACTIVE') {
+        if (!user.isActive) {
+          console.log('User account is not active')
           throw new Error('User account is not active')
         }
 
@@ -60,8 +79,8 @@ export const {
 
         return {
           id: user.id,
-          email: user.email,
-          name: `${user.firstName} ${user.lastName}`,
+          username: user.username,
+          displayName: user.displayName,
           role: user.role,
           department: user.department?.name,
           zone: user.zone?.name,
@@ -76,6 +95,8 @@ export const {
         return {
           ...token,
           id: user.id,
+          username: user.username,
+          displayName: user.displayName,
           role: user.role,
           department: user.department,
           zone: user.zone,
@@ -90,6 +111,8 @@ export const {
         user: {
           ...session.user,
           id: token.id,
+          username: token.username,
+          displayName: token.displayName,
           role: token.role,
           department: token.department,
           zone: token.zone,

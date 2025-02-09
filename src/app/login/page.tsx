@@ -8,7 +8,7 @@ import { z } from 'zod'
 import Link from 'next/link'
 
 const LoginSchema = z.object({
-  email: z.string().email('Email invalide'),
+  username: z.string().min(3, 'Nom d\'utilisateur requis'),
   password: z.string().min(1, 'Mot de passe requis')
 })
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   
   const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
+    username: '',
     password: ''
   })
   const [error, setError] = useState<string>('')
@@ -73,13 +73,13 @@ export default function LoginPage() {
 
       // Attempt to sign in
       const result = await signIn('credentials', {
-        email: validatedData.email,
+        username: validatedData.username,
         password: validatedData.password,
         redirect: false
       })
 
       if (result?.error) {
-        setError('Email ou mot de passe incorrect')
+        setError('Nom d\'utilisateur ou mot de passe incorrect')
       } else if (result?.ok) {
         router.push(callbackUrl)
       }
@@ -268,17 +268,17 @@ export default function LoginPage() {
               
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Votre email
+                  <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Nom d'utilisateur
                   </label>
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
+                    id="username"
+                    name="username"
+                    type="text"
+                    autoComplete="username"
                     required
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    value={formData.username}
+                    onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                     className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
