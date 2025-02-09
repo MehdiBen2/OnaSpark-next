@@ -10,7 +10,8 @@ import {
   Shield, 
   ArrowRight, 
   Clock,
-  Beaker
+  Beaker,
+  Recycle
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -37,10 +38,10 @@ const COLOR_CONFIGS: Record<string, ColorConfig> = {
     gradientTo: 'to-sky-600'
   },
   reuse: {
-    bgColor: 'bg-amber-50',
-    textColor: 'text-amber-600',
-    gradientFrom: 'from-amber-500',
-    gradientTo: 'to-amber-600'
+    bgColor: 'bg-green-50',
+    textColor: 'text-green-600',
+    gradientFrom: 'from-green-500',
+    gradientTo: 'to-green-600'
   },
   finance: {
     bgColor: 'bg-violet-50',
@@ -88,6 +89,9 @@ function DepartementCard({
   const fromColor = extractColor('from')
   const toColor = extractColor('to')
 
+  // Determine the color intensity based on the color name
+  const colorIntensity = color.match(/\d+/)[0]
+
   return (
     <Link 
       href={href} 
@@ -102,15 +106,15 @@ function DepartementCard({
               <div 
                 className={`p-3 rounded-xl bg-opacity-10 transition-all duration-300 group-hover:bg-opacity-20`}
                 style={{ 
-                  backgroundColor: `rgba(var(--${fromColor}-500-rgb), 0.1)`, 
-                  color: `rgb(var(--${fromColor}-500-rgb))`
+                  backgroundColor: `rgba(var(--${fromColor}-${colorIntensity}-rgb), 0.1)`, 
+                  color: `rgb(var(--${fromColor}-${colorIntensity}-rgb))`
                 }}
               >
                 <Icon 
                   size={28} 
                   className="opacity-80 group-hover:opacity-100 transition-opacity"
                   style={{ 
-                    color: `rgb(var(--${fromColor}-500-rgb))`
+                    color: `rgb(var(--${fromColor}-${colorIntensity}-rgb))`
                   }}
                 />
               </div>
@@ -136,25 +140,23 @@ function DepartementCard({
 
             {/* Footer */}
             <div 
-              className={`flex items-center justify-between pt-4 border-t border-gray-100 relative overflow-hidden`}
+              className={`flex items-center justify-between pt-4 border-t border-gray-100`}
             >
               <div className="flex items-center space-x-2 text-gray-500">
                 <Clock className="w-4 h-4" />
                 <span className="text-xs">Mis à jour récemment</span>
               </div>
               
-              <div className="flex items-center text-sm font-medium text-gray-800 group-hover:text-black transition-colors">
-                Explorer
-                <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-
-              {/* Colorful Footer Accent */}
               <div 
-                className="absolute bottom-0 left-0 right-0 h-1 opacity-50 group-hover:opacity-100 transition-opacity"
+                className="flex items-center text-sm font-medium text-gray-800 group-hover:text-black transition-colors group-hover:translate-x-1"
                 style={{ 
-                  background: `linear-gradient(to right, rgb(var(--${fromColor}-500-rgb)), rgb(var(--${toColor}-600-rgb)))` 
+                  color: `rgb(var(--${fromColor}-${colorIntensity}-rgb))`,
+                  transition: 'color 0.3s, transform 0.3s'
                 }}
-              />
+              >
+                Explorer
+                <ArrowRight className="ml-1 w-4 h-4" />
+              </div>
             </div>
           </div>
         </div>
@@ -232,7 +234,7 @@ export default function DepartementsPage() {
       title: 'Moyens Généraux',
       description: 'Gestion des ressources matérielles et logistiques de l\'organisation',
       icon: Wrench,
-      color: 'from-emerald-500 to-emerald-600',
+      color: 'from-orange-600 to-orange-700',
       subItems: [{ value: 'Infrastructure • Transport • Stock' }],
       href: '/departements/moyens-generaux'
     },
@@ -247,9 +249,9 @@ export default function DepartementsPage() {
     {
       title: 'REUSE',
       description: 'Réutilisation et valorisation des eaux épurées',
-      icon: Beaker,
-      color: 'from-amber-500 to-amber-600',
-      subItems: [{ value: 'Réglementations • Qualité • Info' }],
+      icon: Recycle,
+      color: 'from-green-600 to-green-700',
+      subItems: [{ value: 'Réutilisation • Recyclage • Durabilité' }],
       href: '/departements/reuse'
     },
     {
