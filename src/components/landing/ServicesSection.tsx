@@ -3,47 +3,46 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
-  DatabaseCheck, 
-  GraphUp, 
-  Map, 
-  LightningCharge, 
-  ShieldExclamation, 
-  Droplet 
-} from 'react-bootstrap-icons';
+  Database, 
+  Graph, 
+  MapPin, 
+  Zap, 
+  Shield 
+} from 'lucide-react';
 
 const services = [
   {
-    icon: DatabaseCheck,
+    icon: Database,
     title: 'Gestion des Données',
     description: 'Centralisez et gérez efficacement toutes vos données d\'entreprise',
     gradient: 'from-blue-500 to-blue-700'
   },
   {
-    icon: GraphUp,
+    icon: Graph,
     title: 'Analyses et Rapports',
     description: 'Générez des rapports détaillés et des analyses approfondies',
     gradient: 'from-green-500 to-green-700'
   },
   {
-    icon: Map,
+    icon: MapPin,
     title: 'Vue des Incidents sur Carte',
     description: 'Visualisez et localisez les incidents signalés sur une carte interactive',
     gradient: 'from-purple-500 to-purple-700'
   },
   {
-    icon: LightningCharge,
+    icon: Zap,
     title: 'Agent Ona Spark',
     description: 'Assistant intelligent pour la gestion et l\'analyse des ressources en eau',
     gradient: 'from-orange-500 to-orange-700'
   },
   {
-    icon: ShieldExclamation,
+    icon: Shield,
     title: 'Analyse Détaillée des Incidents',
     description: 'Explication approfondie et contextuelle des incidents et accidents',
     gradient: 'from-red-500 to-red-700'
   },
   {
-    icon: Droplet,
+    icon: Shield,
     title: 'Analyse Qualité d\'Eau Épurée',
     description: 'Évaluation détaillée et en temps réel de la qualité des eaux traitées',
     gradient: 'from-cyan-500 to-cyan-700'

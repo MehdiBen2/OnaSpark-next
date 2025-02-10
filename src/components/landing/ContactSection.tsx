@@ -1,11 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { 
-  GeoAlt, 
-  Telephone, 
-  Envelope 
-} from 'react-bootstrap-icons';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
 export default function ContactSection() {
   return (
@@ -40,7 +35,7 @@ export default function ContactSection() {
             <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
               <div className="flex justify-center mb-4">
                 <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
-                  <Envelope size={32} />
+                  <Mail size={32} />
                 </div>
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -55,7 +50,7 @@ export default function ContactSection() {
             <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
               <div className="flex justify-center mb-4">
                 <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
-                  <Telephone size={32} />
+                  <Phone size={32} />
                 </div>
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -70,7 +65,7 @@ export default function ContactSection() {
             <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 text-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200">
               <div className="flex justify-center mb-4">
                 <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
-                  <GeoAlt size={32} />
+                  <MapPin size={32} />
                 </div>
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">

@@ -6,16 +6,15 @@ import Image from 'next/image'
 import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-  faChartLine, 
-  faBuilding, 
-  faUser, 
-  faBook, 
-  faSignOutAlt,
-  faBars,
-  faTimes
-} from '@fortawesome/free-solid-svg-icons'
+  ChartBar, 
+  Building, 
+  User, 
+  Book, 
+  LogOut,
+  Menu,
+  X
+} from 'lucide-react'
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -28,11 +27,28 @@ import {
   AlertDialogTrigger 
 } from '@/components/ui/alert-dialog'
 
-export default function Navbar () {
+// Define explicit type for session
+type Session = {
+  user: {
+    displayName?: string
+    name?: string
+    email: string
+  }
+}
+
+// Explicitly typed Navbar component
+const Navbar: React.FC = function Navbar() {
   const pathname = usePathname()
-  const [session, setSession] = useState(null)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const mobileMenuRef = useRef(null)
+  const [session, setSession] = useState<Session | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
+
+  // Debugging log
+  console.log('Navbar component initialized', { 
+    pathname, 
+    session, 
+    isMobileMenuOpen 
+  })
 
   // Fetch session on component mount
   useEffect(() => {
@@ -40,7 +56,14 @@ export default function Navbar () {
       try {
         const { getSession } = await import('next-auth/react')
         const sessionData = await getSession()
-        setSession(sessionData)
+        
+        // More detailed debugging
+        console.log('Session fetch result:', {
+          sessionData,
+          type: typeof sessionData
+        })
+
+        setSession(sessionData as Session | null)
       } catch (error) {
         console.error('Failed to fetch session', error)
         setSession(null)
@@ -52,8 +75,8 @@ export default function Navbar () {
 
   // Close mobile menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
         setIsMobileMenuOpen(false)
       }
     }
@@ -62,7 +85,7 @@ export default function Navbar () {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const isActive = (path) => {
+  const isActive = (path: string) => {
     // Exact match for dashboard
     if (path === '/dashboard' && pathname === path) return 'bg-white text-[var(--ona-primary)]'
     
@@ -88,7 +111,7 @@ export default function Navbar () {
           setIsMobileMenuOpen(false)
         }}
       >
-        <FontAwesomeIcon icon={faChartLine} className="h-4 w-4" />
+        <ChartBar className="h-4 w-4" />
         <span>Tableau de bord</span>
       </Link>
       
@@ -99,7 +122,7 @@ export default function Navbar () {
           setIsMobileMenuOpen(false)
         }}
       >
-        <FontAwesomeIcon icon={faBuilding} className="h-4 w-4" />
+        <Building className="h-4 w-4" />
         <span>Départements</span>
       </Link>
       
@@ -110,7 +133,7 @@ export default function Navbar () {
           setIsMobileMenuOpen(false)
         }}
       >
-        <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+        <User className="h-4 w-4" />
         <span>Mon Profil</span>
       </Link>
       
@@ -121,16 +144,19 @@ export default function Navbar () {
           setIsMobileMenuOpen(false)
         }}
       >
-        <FontAwesomeIcon icon={faBook} className="h-4 w-4" />
+        <Book className="h-4 w-4" />
         <span>Documentation</span>
       </Link>
     </>
   )
 
+  // Early return if no session
   if (!session) {
+    console.log('No session available, returning null')
     return null
   }
 
+  // Render the full navbar
   return (
     <motion.nav 
       initial={{ opacity: 0, y: -100 }}
@@ -176,7 +202,7 @@ export default function Navbar () {
           {/* User info and logout */}
           <div className="flex items-center pl-6 border-l border-white/20">
             <span className="text-sm font-medium mr-4 flex items-center">
-              <FontAwesomeIcon icon={faUser} className="h-4 w-4 mr-2" />
+              <User className="h-4 w-4 mr-2" />
               {session.user.displayName || session.user.name || session.user.email}
             </span>
             <AlertDialog>
@@ -186,7 +212,7 @@ export default function Navbar () {
                   aria-label="Déconnexion"
                   title="Déconnexion"
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
+                  <LogOut className="h-5 w-5 text-white" />
                 </button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -212,56 +238,60 @@ export default function Navbar () {
           <button 
             onClick={toggleMobileMenu}
             className="text-white focus:outline-none"
+            aria-label="Toggle mobile menu"
           >
-            <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} className="h-6 w-6" />
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            ref={mobileMenuRef}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-16 left-0 right-0 bg-[var(--ona-primary)] shadow-lg"
-          >
-            <div className="px-4 pt-2 pb-4 space-y-2">
-              <NavLinks />
-              <div className="pt-4 mt-4 border-t border-white/20">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <button 
-                      className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center justify-center"
-                      aria-label="Déconnexion"
-                      title="Déconnexion"
-                    >
-                      <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 text-white" />
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Êtes-vous sûr de vouloir vous déconnecter ?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Vous allez être redirigé vers la page de connexion. Toute session non enregistrée sera perdue.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Annuler</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => signOut({ callbackUrl: '/login' })}>
-                        Se déconnecter
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              ref={mobileMenuRef}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden absolute top-16 left-0 right-0 bg-[var(--ona-primary)] shadow-lg"
+            >
+              <div className="px-4 pt-2 pb-4 space-y-2">
+                <NavLinks />
+                <div className="pt-4 mt-4 border-t border-white/20">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button 
+                        className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors duration-200 flex items-center justify-center"
+                        aria-label="Déconnexion"
+                        title="Déconnexion"
+                      >
+                        <LogOut className="h-5 w-5 text-white" />
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Êtes-vous sûr de vouloir vous déconnecter ?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Vous allez être redirigé vers la page de connexion. Toute session non enregistrée sera perdue.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => signOut({ callbackUrl: '/login' })}>
+                          Se déconnecter
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.nav>
   )
 }
+
+// Explicitly export the component
+export default Navbar

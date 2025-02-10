@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { User, Menu, X } from 'lucide-react';
 
 export default function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -77,7 +76,7 @@ export default function LandingNavbar() {
               }}
             >
               <span>Connexion</span>
-              <FontAwesomeIcon icon={faSignInAlt} className="h-4 w-4" />
+              <User className="h-4 w-4" />
             </Link>
           </div>
 
@@ -91,21 +90,7 @@ export default function LandingNavbar() {
             >
               <span className="sr-only">Open main menu</span>
               {/* Hamburger Icon */}
-              <svg 
-                className="h-8 w-8" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                aria-hidden="true"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M4 6h16M4 12h16M4 18h16" 
-                />
-              </svg>
+              <Menu className="h-8 w-8" />
             </button>
           </div>
         </div>
@@ -134,7 +119,7 @@ export default function LandingNavbar() {
               }}
             >
               <span>Connexion</span>
-              <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
+              <User className="h-5 w-5" />
             </Link>
           </div>
         </div>
