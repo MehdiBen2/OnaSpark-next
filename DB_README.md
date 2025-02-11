@@ -55,6 +55,16 @@ Defines the severity of incidents:
   - One-to-Many with `User`: A zone can have multiple users
   - One-to-Many with `IncidentPhysique`: A zone can have multiple incidents
 
+  5. **Zone (Conditionnel)**
+   - Obligatoire pour : Employeur Zone, Employeur Unité, Utilisateur
+   - Liste des zones disponibles
+   - Source : dbona.db
+
+6. **Unité (Conditionnel)**
+   - Obligatoire pour : Employeur Unité, Utilisateur
+   - Liste dynamique basée sur la zone sélectionnée
+   - Source : onadb.db
+
 ### 3. User Model
 - **Attributes**:
   - `id`: Unique identifier (CUID)
