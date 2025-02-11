@@ -7,8 +7,13 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { 
   Clock,
-  MapPin
+  MapPin,
+  Building, 
+  FileText, 
+  Users, 
+  LayoutGrid 
 } from 'lucide-react'
+import Link from 'next/link'
 
 const AnimatedBalls = () => {
   const ballVariants = {
@@ -141,6 +146,33 @@ const DashboardBanner = ({ userName, role, department }: {
   )
 }
 
+const QuickAccessCard = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  href 
+}: { 
+  icon: React.ComponentType<{ className?: string }>, 
+  title: string, 
+  description: string, 
+  href: string 
+}) => (
+  <Link 
+    href={href} 
+    className="group block p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:border-blue-500"
+  >
+    <div className="flex items-center mb-4">
+      <Icon className="w-10 h-10 text-blue-600 group-hover:text-blue-700 transition-colors duration-300 mr-4" />
+      <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300">
+        {title}
+      </h3>
+    </div>
+    <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
+      {description}
+    </p>
+  </Link>
+)
+
 export default function DashboardPage() {
   const { data: session } = useSession()
 
@@ -155,6 +187,37 @@ export default function DashboardPage() {
         role={session.user?.role || 'Membre'} 
         department={session.user?.department || 'ONA'} 
       />
+      
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Accès Rapide</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <QuickAccessCard 
+            icon={Building}
+            title="Gestion des Unités"
+            description="Gérez et suivez vos unités organisationnelles"
+            href="/dashboard/admin/unites"
+          />
+          <QuickAccessCard 
+            icon={FileText}
+            title="Rapports d'Incidents"
+            description="Consultez et gérez les rapports d'incidents"
+            href="/departements/exploitation/rapports/incidents/liste"
+          />
+          <QuickAccessCard 
+            icon={Users}
+            title="Gestion des Utilisateurs"
+            description="Administrez les comptes utilisateurs"
+            href="/dashboard/users"
+          />
+          <QuickAccessCard 
+            icon={LayoutGrid}
+            title="Tableau de Bord"
+            description="Vue d'ensemble de vos activités"
+            href="/dashboard"
+          />
+        </div>
+      </div>
     </div>
   )
 }

@@ -10,12 +10,38 @@ generator client {
 }
 
 // Comprehensive User Roles
-enum UserRole {
-  ADMIN
-  DG_EMPLOYEE
-  ZONE_EMPLOYEE
-  UNIT_EMPLOYEE
-  STANDARD_USER
+model User {
+  id            String    @id @default(cuid())
+  
+  // Identification
+  username      String    @unique
+  displayName   String
+  passwordHash  String
+  
+  // Role and Access Control
+  role          String
+  
+  // Department Association
+  departmentId  String?
+  department    Department?  @relation(fields: [departmentId], references: [id])
+  
+  // Zone and Unit Access Control
+  zoneId        String?
+  zone          Zone?        @relation(fields: [zoneId], references: [id])
+  
+  unitId        String?
+  unit          Unit?        @relation(fields: [unitId], references: [id])
+  
+  // User Management
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  
+  // Audit Trails
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relationships
+  incidents     IncidentPhysique[]
 }
 
 // Department Model
@@ -74,41 +100,6 @@ model Centre {
   updatedAt     DateTime  @updatedAt
 }
 
-// Users Table with Comprehensive Access Control
-model User {
-  id            String    @id @default(cuid())
-  
-  // Identification
-  username      String    @unique
-  displayName   String
-  passwordHash  String
-  
-  // Role and Access Control
-  role          UserRole
-  
-  // Department Association
-  departmentId  String?
-  department    Department?  @relation(fields: [departmentId], references: [id])
-  
-  // Zone and Unit Access Control
-  zoneId        String?
-  zone          Zone?        @relation(fields: [zoneId], references: [id])
-  
-  unitId        String?
-  unit          Unit?        @relation(fields: [unitId], references: [id])
-  
-  // User Management
-  isActive      Boolean   @default(true)
-  lastLogin     DateTime?
-  
-  // Audit Trails
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relationships
-  incidents     IncidentPhysique[]
-}
-
 // Incidents Physique Table
 model IncidentPhysique {
   id              String    @id @default(cuid())
@@ -129,8 +120,9 @@ model IncidentPhysique {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   
-  status          IncidentStatus  @default(PENDING)
-  gravite         IncidentGravity
+  status          String
+  gravite         String
+  
   impact          String?
   isValid         Boolean         @default(false)
   
@@ -153,19 +145,4 @@ model IncidentPhysique {
   
   centre          Centre?    @relation(fields: [centreId], references: [id])
   centreId        String?
-}
-
-// Existing Enums
-enum IncidentStatus {
-  PENDING
-  IN_PROGRESS
-  RESOLVED
-  CANCELLED
-}
-
-enum IncidentGravity {
-  LOW
-  MEDIUM
-  HIGH
-  CRITICAL
 }
